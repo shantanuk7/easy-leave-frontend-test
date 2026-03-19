@@ -13,6 +13,7 @@ export default defineConfig({
     environment: 'jsdom', 
     setupFiles: './src_test/setupTests.ts', 
     coverage: {
+      provider: 'v8',
       thresholds: {
         'src/pages/**': {
           branches: 80,
