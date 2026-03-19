@@ -3,7 +3,7 @@ on:
     push:
         branches: [main]
     pull_request:
-        branches: [main]
+        branches: "**"
 jobs:
     ci:
         name: Lint and Build Check
@@ -26,8 +26,8 @@ jobs:
             - name: TypeScript type check
               run: npx tsc --noEmit
             
-            - name: Run frontend tests
-              run: npm test
+            - name: Run frontend tests and Check coverage
+              run: npm run test:coverage
 
             - name: Build project
               run: npm run build
