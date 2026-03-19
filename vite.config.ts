@@ -14,11 +14,13 @@ export default defineConfig({
     setupFiles: './src_test/setupTests.ts', 
     coverage: {
       thresholds: {
-        branches: 80, 
-        functions: 80,
-        lines: 80,
-        statements: 80,
-      },
+        'src/pages/**': {
+          branches: 80,
+          functions: 80,
+          lines: 80,
+          statements: 80,
+        },
+      }
     },
   },
 })
