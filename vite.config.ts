@@ -10,18 +10,17 @@ export default defineConfig({
   ],
   test: {
     globals: true,
-    environment: 'jsdom', 
-    setupFiles: './src_test/setupTests.ts', 
+    environment: 'jsdom',
+    setupFiles: './src_test/setupTests.ts',
     coverage: {
       provider: 'v8',
+      include: ['src/**'],
       thresholds: {
-        'src/pages/**': {
-          branches: 80,
-          functions: 80,
-          lines: 80,
-          statements: 80,
-        },
+        branches: 100,
+        functions: 100,
+        lines: 100,
+        statements: 100,
       }
-    },
+    }
   },
 })
