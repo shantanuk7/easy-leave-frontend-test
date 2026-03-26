@@ -6,8 +6,8 @@ const renderApp = () => {
         <App />
     )
 }
-describe('app test',()=>{
-    test("app",()=>{
+describe('App Component',()=>{
+    test("renders App component content",()=>{
         renderApp()
         expect(screen.getByText('Leave Management System'))
     })
