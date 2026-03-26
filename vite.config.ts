@@ -20,7 +20,7 @@ export default defineConfig({
         '**/node_modules/**',
         'src/main.tsx',
         'src/components/ui/**',
-        'src/hooks/**',
+        'src/hooks/use-mobile.ts',
         'src/lib/utils.ts',
         '**/*.css',
       ],
