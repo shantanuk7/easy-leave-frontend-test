@@ -7,6 +7,7 @@ import { STATUS_OPTIONS, type LeaveStatus } from '../constants/LeaveStatus';
 import Loading from '@/components/Loading';
 import useLeaves from '@/hooks/useLeaves';
 import Badge from '@/components/Badge';
+import ApplyLeaveForm from '@/components/ApplyLeaveForm';
 
 function Leave(): React.JSX.Element {
   const [status, setStatus] = useState<LeaveStatus>('all');
@@ -66,6 +67,7 @@ function Leave(): React.JSX.Element {
           />
         )}
       </div>
+      <ApplyLeaveForm />
     </div>
   );
 }
