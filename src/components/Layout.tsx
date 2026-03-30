@@ -1,13 +1,17 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/AppSidebar"
+import { Outlet } from "react-router-dom"
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+const Layout = () : React.JSX.Element => {
   return (
     <SidebarProvider>
         <AppSidebar />
         <main>
             <SidebarTrigger />
-            {children}
+            <Outlet />
         </main>
-    </SidebarProvider>)
+    </SidebarProvider>
+    )
 }
+
+export default Layout;

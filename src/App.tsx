@@ -1,14 +1,10 @@
 import './App.css'
-import Layout from './components/Layout';
+import AppRoutes from './routes/AppRoutes';
 
-const App = (): React.JSX.Element => {
-  return (
-        <Layout>
-        <div>
-          EasyLeave - Leave Management System
-        </div>
-        </Layout>
-  );
-};
+const App = () => {
+    return (
+        <AppRoutes />
+    )
+}
 
 export default App;
