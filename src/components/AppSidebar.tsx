@@ -12,7 +12,7 @@ import type { NavItem } from "@/types/navigation"
 import { CalendarDays } from "lucide-react"
 import { NavLink } from "react-router-dom";
 
-export function AppSidebar() {
+const AppSidebar  = () : React.JSX.Element => {
   return (
     <Sidebar>
       <SidebarHeader>
@@ -52,3 +52,5 @@ export function AppSidebar() {
     </Sidebar>
   )
 }
+
+export { AppSidebar };

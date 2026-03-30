@@ -47,7 +47,7 @@ function useSidebar() {
   return context
 }
 
-function  SidebarProvider({
+const SidebarProvider = ({
   defaultOpen = true,
   open: openProp,
   onOpenChange: setOpenProp,
@@ -59,7 +59,7 @@ function  SidebarProvider({
   defaultOpen?: boolean
   open?: boolean
   onOpenChange?: (open: boolean) => void
-}) {
+}) : React.JSX.Element => {
   const isMobile = useIsMobile()
   const [openMobile, setOpenMobile] = React.useState(false)
 
@@ -143,7 +143,7 @@ function  SidebarProvider({
   )
 }
 
-function Sidebar({
+const Sidebar = ({
   side = "left",
   variant = "sidebar",
   collapsible = "offcanvas",
@@ -155,7 +155,7 @@ function Sidebar({
   side?: "left" | "right"
   variant?: "sidebar" | "floating" | "inset"
   collapsible?: "offcanvas" | "icon" | "none"
-}) {
+}) : React.JSX.Element => {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
 
   if (collapsible === "none") {
@@ -245,11 +245,11 @@ function Sidebar({
   )
 }
 
-function SidebarTrigger({
+const SidebarTrigger = ({
   className,
   onClick,
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: React.ComponentProps<typeof Button>) : React.JSX.Element => {
   const { toggleSidebar } = useSidebar()
 
   return (
@@ -272,7 +272,7 @@ function SidebarTrigger({
 }
 
 
-function SidebarHeader({ className, ...props }: React.ComponentProps<"div">) {
+const SidebarHeader = ({ className, ...props }: React.ComponentProps<"div">) : React.JSX.Element => {
   return (
     <div
       data-slot="sidebar-header"
@@ -284,7 +284,7 @@ function SidebarHeader({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 
-function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
+const SidebarContent = ({ className, ...props }: React.ComponentProps<"div">) : React.JSX.Element => {
   return (
     <div
       data-slot="sidebar-content"
@@ -299,7 +299,7 @@ function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 
-function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
+const SidebarGroup = ({ className, ...props }: React.ComponentProps<"div">) : React.JSX.Element => {
   return (
     <div
       data-slot="sidebar-group"
@@ -313,11 +313,11 @@ function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-function SidebarGroupLabel({
+const SidebarGroupLabel = ({
   className,
   asChild = false,
   ...props
-}: React.ComponentProps<"div"> & { asChild?: boolean }) {
+}: React.ComponentProps<"div"> & { asChild?: boolean }) : React.JSX.Element => {
   const Comp = asChild ? Slot.Root : "div"
 
   return (
@@ -334,7 +334,7 @@ function SidebarGroupLabel({
 }
 
 
-function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
+const SidebarMenuItem = ({ className, ...props }: React.ComponentProps<"li">) : React.JSX.Element => {
   return (
     <li
       data-slot="sidebar-menu-item"
@@ -366,7 +366,7 @@ const sidebarMenuButtonVariants = cva(
   }
 )
 
-function SidebarMenuButton({
+const SidebarMenuButton = ({
   asChild = false,
   isActive = false,
   variant = "default",
@@ -378,7 +378,7 @@ function SidebarMenuButton({
   asChild?: boolean
   isActive?: boolean
   tooltip?: string | React.ComponentProps<typeof TooltipContent>
-} & VariantProps<typeof sidebarMenuButtonVariants>) {
+} & VariantProps<typeof sidebarMenuButtonVariants>) : React.JSX.Element => {
   const Comp = asChild ? Slot.Root : "button"
   const { isMobile, state } = useSidebar()
 
