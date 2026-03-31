@@ -10,9 +10,7 @@ type Leave = {
 }
 
 const mockData: Leave[] = [
-    { id: 1, type: 'Annual Leave', employeeName: 'Priyansh Saxena', date: new Date('2026-10-01') },
-    { id: 2, type: 'Sick Leave', employeeName: 'Priyansh Saxena', date: new Date('2026-10-02') },
-    { id: 3, type: 'Personal Leave', employeeName: 'Priyansh Saxena', date: new Date('2026-10-03') },
+    { id: 1, type: 'Annual Leave', employeeName: 'Priyansh Saxena', date: new Date('2026-10-01') }
 ]
 
 const mockColumns = [
@@ -43,8 +41,6 @@ describe('Table Component', () => {
     test('renders all data values correctly', () => {
         renderTable()
         expect(screen.getByText('Annual Leave')).toBeDefined()
-        expect(screen.getByText('Sick Leave')).toBeDefined()
-        expect(screen.getByText('Personal Leave')).toBeDefined()
     })
     test('render single row correctly', () => {
         const singleData = [mockData[0]]

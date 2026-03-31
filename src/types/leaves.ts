@@ -1,5 +1,3 @@
-export type LeaveStatus = "upcoming" | "ongoing" | "completed" | "all";
-
 export type LeaveResponse = {
   id: string;
   date: string;

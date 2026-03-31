@@ -3,9 +3,9 @@ import Table from '../components/Table';
 import PageHeader from '../components/PageHeader';
 import FilterDropdown from '../components/FilterDropdown';
 import { EllipsisVertical } from 'lucide-react';
-import type { LeaveResponse, LeaveStatus } from '../types/leaves';
+import type { LeaveResponse} from '../types/leaves';
 import { fetchLeaves } from '../api/leave.api';
-import { STATUS_OPTIONS } from '../constants/LeaveStatus';
+import { STATUS_OPTIONS, type LeaveStatus } from '../constants/LeaveStatus';
 import Loading from '@/components/Loading';
 
 function Leave(): React.JSX.Element {

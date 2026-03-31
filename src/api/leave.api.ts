@@ -1,5 +1,5 @@
-import type { LeaveScope } from "../constants/LeaveStatus";
-import type { LeaveResponse, LeaveStatus } from "../types/leaves";
+import type { LeaveScope, LeaveStatus } from "../constants/LeaveStatus";
+import type { LeaveResponse} from "../types/leaves";
 import axiosInstance from "./axiosInstance";
 
 type Props = {
