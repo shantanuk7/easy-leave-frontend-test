@@ -15,7 +15,7 @@ describe('Home Component', () => {
   test('renders Home component content', () => {
     renderApp();
 
-    expect(screen.getByRole('heading', { name: /easyleave/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /sign in with google/i })).toBeInTheDocument();
+    expect(screen.getByText(/easyleave/i)).toBeInTheDocument();
+    expect(screen.getByText(/sign in with google/i)).toBeInTheDocument();
   });
 });

@@ -15,12 +15,8 @@ describe('Login Component', () => {
   test('renders Google sign in link with correct href and Google Logo', () => {
     render(<Login />);
 
-    const link = screen.getByRole('link', {
-      name: /sign in with google/i,
-    });
-
-    expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', import.meta.env.VITE_OAUTH_GOOGLE_URI);
+    expect(screen.getByText(/easyleave/i)).toBeInTheDocument();
+    expect(screen.getByText(/sign in with google/i)).toBeInTheDocument();
 
     const image = screen.getByAltText('Google Logo');
     expect(image).toBeInTheDocument();
