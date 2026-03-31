@@ -19,8 +19,10 @@ function Leave(): React.JSX.Element {
       setError(null);
       const data = await fetchLeaves({ status, scope: 'self' });
       setLeaves(data);
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      }
     } finally {
       setLoading(false);
     }

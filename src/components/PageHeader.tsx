@@ -1,8 +1,10 @@
+import type { JSX } from "react";
+
 type Props = {
     pageTitle: string;
     pageSubtitle: string;
 }
-const PageHeader = ({pageTitle, pageSubtitle}: Props) => {
+const PageHeader = ({pageTitle, pageSubtitle}: Props) : JSX.Element => {
   return (
     <div className="mb-6">
       <h1 className="text-2xl font-bold tracking-tight text-foreground;">{pageTitle}</h1>
@@ -11,4 +13,4 @@ const PageHeader = ({pageTitle, pageSubtitle}: Props) => {
   )
 }
 
-export default PageHeader
+export default PageHeader;
