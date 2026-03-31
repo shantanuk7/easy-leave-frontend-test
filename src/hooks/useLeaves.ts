@@ -1,0 +1,34 @@
+import { useEffect, useState } from "react";
+import { fetchLeaves } from "../api/leave.api";
+import type { LeaveScope, LeaveStatus } from "@/constants/LeaveStatus";
+import type { LeaveResponse } from "@/types/leaves";
+
+function useLeaves(status: LeaveStatus, scope: LeaveScope) {
+  const [leaves, setLeaves] = useState<LeaveResponse[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadLeaves() {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const data = await fetchLeaves({ status, scope });
+        setLeaves(data);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadLeaves();
+  }, [status, scope]);
+
+  return { leaves, loading, error };
+}
+
+export default useLeaves;
