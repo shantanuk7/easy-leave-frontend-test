@@ -1,37 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Table from '../components/Table';
 import PageHeader from '../components/PageHeader';
 import FilterDropdown from '../components/FilterDropdown';
 import { EllipsisVertical } from 'lucide-react';
-import type { LeaveResponse} from '../types/leaves';
-import { fetchLeaves } from '../api/leave.api';
+import type { LeaveResponse } from '../types/leaves';
 import { STATUS_OPTIONS, type LeaveStatus } from '../constants/LeaveStatus';
 import Loading from '@/components/Loading';
+import useLeaves from '@/hooks/useLeaves';
 
 function Leave(): React.JSX.Element {
-  const [leaves, setLeaves] = useState<LeaveResponse[]>([]);
-  const [status, setStatus] = useState<LeaveStatus>('all');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<LeaveStatus>("all");
 
-  async function loadLeaves() {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await fetchLeaves({ status, scope: 'self' });
-      setLeaves(data);
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    loadLeaves();
-  }, [status]);
+  const { leaves, loading, error } = useLeaves(status, "self");
 
   const columns = [
     { header: 'Type', render: (leave: LeaveResponse) => leave.type },

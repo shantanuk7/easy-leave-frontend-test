@@ -1,34 +1,12 @@
-import { useEffect, useState } from "react";
 import { EllipsisVertical } from "lucide-react";
 import PageHeader from "../components/PageHeader"
 import Table from "../components/Table";
-import { fetchLeaves } from "../api/leave.api";
 import type { LeaveResponse } from "../types/leaves";
 import Loading from "@/components/Loading";
+import useLeaves from "@/hooks/useLeaves";
 
 function Dashboard() : React.JSX.Element {
-  const [leaves, setLeaves] = useState<LeaveResponse[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function loadLeaves() {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await fetchLeaves({ status: 'upcoming', scope: 'self' });
-      setLeaves(data);
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    loadLeaves();
-  }, []);
+  const { leaves, loading, error } = useLeaves("upcoming", "self");
 
   const columns = [
     { header: 'Type', render: (leave: LeaveResponse) => leave.type },
