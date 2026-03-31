@@ -36,6 +36,10 @@ const ApplyLeaveForm = (): React.JSX.Element => {
     ),
   });
 
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>(
+    LEAVE_CATEGORIES[0].id,
+  );
+
   const onSubmit = async (
     _values: ApplyLeaveFormValues,
     { resetForm }: FormikHelpers<ApplyLeaveFormValues>,
@@ -48,7 +52,7 @@ const ApplyLeaveForm = (): React.JSX.Element => {
     }
 
     const payload: LeaveApplication = {
-      leaveCategoryId: LEAVE_CATEGORIES[0].id,
+      leaveCategoryId: selectedCategoryId,
       dates: expandedDates,
       duration: 'FULL_DAY',
       startTime: '10:00',
@@ -68,13 +72,28 @@ const ApplyLeaveForm = (): React.JSX.Element => {
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
       {({ isSubmitting }) => (
         <Form>
+          <div className="flex flex-col">
+            <label>Leave Category:</label>
+            <select
+              name="leaveCategoryId"
+              value={selectedCategoryId}
+              onChange={(e) => setSelectedCategoryId(e.target.value)}
+              className="ml-2 rounded-md border border-gray-300 p-2"
+            >
+              {LEAVE_CATEGORIES.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
           <DatePicker date={date} setDate={setDate} className="w-full cursor-pointer" />
 
           <Button
             type="submit"
-            className="w-full bg-(--technogise-blue) cursor-pointer py-5"
-            disabled={isSubmitting}
+            className="mt-4 w-full bg-(--technogise-blue) cursor-pointer py-5"
+            disabled={isSubmitting || !date?.from}
           >
             Submit Leave
           </Button>
