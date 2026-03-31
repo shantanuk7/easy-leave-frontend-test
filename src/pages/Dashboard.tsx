@@ -4,6 +4,7 @@ import PageHeader from "../components/PageHeader"
 import Table from "../components/Table";
 import { fetchLeaves } from "../api/leave.api";
 import type { LeaveResponse } from "../types/leaves";
+import Loading from "@/components/Loading";
 
 function Dashboard() : React.JSX.Element {
   const [leaves, setLeaves] = useState<LeaveResponse[]>([]);
@@ -47,7 +48,7 @@ function Dashboard() : React.JSX.Element {
       <div className='flex w-full rounded-2xl shadow-xs border border-neutral-200'>
         <div className='w-full'>
           <h1 className='text-2xl font-bold mb-4 p-3'>Upcoming Leaves</h1>
-          {loading && <p className="p-3 text-neutral-400">Loading...</p>}
+          {loading && <Loading />}
           {error && <p className="p-3 text-red-700">{error}</p>}
           {!loading && !error && <Table data={leaves} columns={columns} message="No upcoming leave records found." />}
         </div>

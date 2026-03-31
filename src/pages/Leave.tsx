@@ -6,6 +6,7 @@ import { EllipsisVertical } from 'lucide-react';
 import type { LeaveResponse, LeaveStatus } from '../types/leaves';
 import { fetchLeaves } from '../api/leave.api';
 import { STATUS_OPTIONS } from '../constants/LeaveStatus';
+import Loading from '@/components/Loading';
 
 function Leave(): React.JSX.Element {
   const [leaves, setLeaves] = useState<LeaveResponse[]>([]);
@@ -66,9 +67,11 @@ function Leave(): React.JSX.Element {
           </div>
         </div>
 
-        {loading && <p className="p-3 text-neutral-400">Loading...</p>}
+        {loading && <Loading />}
         {error && <p className="p-3 text-red-700">{error}</p>}
-        {!loading && !error && <Table data={leaves} columns={columns} message='No leave records found.' />}
+        {!loading && !error && (
+          <Table data={leaves} columns={columns} message="No leave records found." />
+        )}
       </div>
     </div>
   );
