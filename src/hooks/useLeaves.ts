@@ -3,7 +3,12 @@ import { fetchLeaves } from "../api/leave.api";
 import type { LeaveScope, LeaveStatus } from "@/constants/LeaveStatus";
 import type { LeaveResponse } from "@/types/leaves";
 
-function useLeaves(status: LeaveStatus, scope: LeaveScope) {
+type UseLeavesReturn = {
+  leaves: LeaveResponse[];
+  loading: boolean;
+  error: string | null;
+}
+function useLeaves(status: LeaveStatus, scope: LeaveScope) : UseLeavesReturn {
   const [leaves, setLeaves] = useState<LeaveResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
