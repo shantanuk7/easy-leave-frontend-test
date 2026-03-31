@@ -43,6 +43,7 @@ export const DatePicker = ({ date, setDate, className }: DatePickerProps): React
           selected={date}
           onSelect={setDate}
           numberOfMonths={1}
+          disabled={{ dayOfWeek: [0, 6] }}
         />
       </PopoverContent>
     </Popover>
