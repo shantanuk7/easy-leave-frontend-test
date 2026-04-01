@@ -15,7 +15,7 @@ const initialValues: LeaveFormValues = {
   dateRange: undefined,
 };
 
-const ApplyLeaveForm = (): React.JSX.Element => {
+const LeaveForm = (): React.JSX.Element => {
   const handleSubmit = async (
     _values: LeaveFormValues,
     { resetForm }: FormikHelpers<LeaveFormValues>,
@@ -60,4 +60,4 @@ const ApplyLeaveForm = (): React.JSX.Element => {
   );
 };
 
-export default ApplyLeaveForm;
+export default LeaveForm;
