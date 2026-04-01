@@ -14,6 +14,8 @@ type DatePickerProps = {
 };
 
 export const DatePicker = ({ date, setDate, className }: DatePickerProps): React.JSX.Element => {
+  const today = new Date();
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -39,7 +41,7 @@ export const DatePicker = ({ date, setDate, className }: DatePickerProps): React
       <PopoverContent className="w-auto p-0 " align="start">
         <Calendar
           mode="range"
-          defaultMonth={date?.from}
+          defaultMonth={today}
           selected={date}
           onSelect={setDate}
           numberOfMonths={1}
