@@ -1,7 +1,7 @@
 import type { LeaveScope, LeaveStatus } from '../constants/LeaveStatus';
 import type { LeaveResponse } from '../types/leaves';
 import type { LeaveApplication } from '@/types/leave.type';
-import axiosInstance from './axiosInstance';
+import axiosInstance from './axiosinstance';
 
 type Props = {
   status?: LeaveStatus;
@@ -22,7 +22,7 @@ export const fetchLeaves = async ({ status, scope = 'self' }: Props): Promise<Le
 
 export const applyLeave = async (leaveData: LeaveApplication): Promise<LeaveApplication> => {
   try {
-    const response = await axiosInstance.post('/leaves', leaveData);
+    const response = await axiosInstance.post('/api/leaves', leaveData);
     return response.data.data;
   } catch (error) {
     console.error('Error applying for leave:', error);
