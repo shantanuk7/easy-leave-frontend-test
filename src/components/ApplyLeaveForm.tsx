@@ -13,11 +13,13 @@ import useLeaveCategories from '@/hooks/useLeaveCategories';
 type LeaveFormValues = {
   leaveCategoryId: string;
   dateRange: DateRange | undefined;
+  startTime: string;
 };
 
 const initialValues: LeaveFormValues = {
   leaveCategoryId: '',
   dateRange: undefined,
+  startTime: '10:00',
 };
 
 const getDatesBetween = (range: DateRange | undefined): string[] => {
@@ -58,7 +60,7 @@ const ApplyLeaveForm = ({ refresh }: { refresh: () => Promise<void> }): React.JS
       leaveCategoryId: values.leaveCategoryId,
       dates,
       duration: 'FULL_DAY',
-      startTime: '10:00',
+      startTime: values.startTime,
       description: 'Leave',
     };
 
@@ -110,6 +112,16 @@ const ApplyLeaveForm = ({ refresh }: { refresh: () => Promise<void> }): React.JS
               className="w-full cursor-pointer"
             />
             <ErrorMessage name="dateRange" component="p" className="text-sm text-red-700" />
+          </div>
+
+          <div className="flex flex-col">
+            <label htmlFor="startTime">Start Time</label>
+            <Field
+              type="time"
+              id="startTime"
+              name="startTime"
+              className="px-3 py-2 rounded-lg border border-neutral-300 bg-white text-sm cursor-pointer"
+            />
           </div>
 
           <Button
