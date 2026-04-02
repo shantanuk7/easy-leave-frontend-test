@@ -14,12 +14,14 @@ type LeaveFormValues = {
   leaveCategoryId: string;
   dateRange: DateRange | undefined;
   startTime: string;
+  duration: 'FULL_DAY' | 'HALF_DAY';
 };
 
 const initialValues: LeaveFormValues = {
   leaveCategoryId: '',
   dateRange: undefined,
   startTime: '10:00',
+  duration: 'FULL_DAY',
 };
 
 const getDatesBetween = (range: DateRange | undefined): string[] => {
@@ -59,7 +61,7 @@ const ApplyLeaveForm = ({ refresh }: { refresh: () => Promise<void> }): React.JS
     const leaveData: LeaveApplication = {
       leaveCategoryId: values.leaveCategoryId,
       dates,
-      duration: 'FULL_DAY',
+      duration: values.duration,
       startTime: values.startTime,
       description: 'Leave',
     };
@@ -112,6 +114,19 @@ const ApplyLeaveForm = ({ refresh }: { refresh: () => Promise<void> }): React.JS
               className="w-full cursor-pointer"
             />
             <ErrorMessage name="dateRange" component="p" className="text-sm text-red-700" />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label htmlFor="duration">Duration</label>
+            <Field
+              as="select"
+              name="duration"
+              id="duration"
+              className="px-3 py-2 rounded-lg border border-neutral-300 text-sm cursor-pointer"
+            >
+              <option value="FULL_DAY">Full Day</option>
+              <option value="HALF_DAY">Half Day</option>
+            </Field>
           </div>
 
           <div className="flex flex-col">
