@@ -7,7 +7,7 @@ import type { LeaveResponse } from '../types/leaves';
 import { STATUS_OPTIONS, type LeaveStatus } from '../constants/LeaveStatus';
 import Loading from '@/components/Loading';
 import useLeaves from '@/hooks/useLeaves';
-import LeaveForm from '@/components/LeaveForm';
+import ApplyLeaveForm from '@/components/ApplyLeaveForm';
 
 function Leave(): React.JSX.Element {
   const [status, setStatus] = useState<LeaveStatus>('all');
@@ -38,7 +38,7 @@ function Leave(): React.JSX.Element {
 
       <div className="flex flex-col lg:flex-row wrap gap-4">
         <div className="flex lg:flex-3 w-full bg-white rounded-2xl shadow-xs border border-neutral-200">
-          <LeaveForm />
+          <ApplyLeaveForm />
         </div>
 
         <div className="flex lg:flex-7 w-full bg-white rounded-2xl shadow-xs border border-neutral-200">
