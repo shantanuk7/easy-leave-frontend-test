@@ -5,6 +5,8 @@ import { Button } from './ui/button';
 import { applyLeave } from '@/api/leave.api';
 import type { LeaveApplication } from '@/types/leave.type';
 import type { DateRange } from 'react-day-picker';
+import { format, eachDayOfInterval } from 'date-fns';
+import DatePicker from './ui/DatePicker';
 import { isAxiosError } from 'axios';
 
 type LeaveFormValues = {
@@ -15,16 +17,28 @@ const initialValues: LeaveFormValues = {
   dateRange: undefined,
 };
 
-const LeaveForm = (): React.JSX.Element => {
+const getDatesBetween = (range: DateRange | undefined): string[] => {
+  const noDatesSelected = !range || !range.from;
+  if (noDatesSelected) return [];
+
+  const startDate = range.from;
+  const endDate = range.to ?? range.from;
+  const allDays = eachDayOfInterval({ start: startDate!, end: endDate! });
+  const formattedDays = allDays.map((day) => format(day, 'yyyy-MM-dd'));
+
+  return formattedDays;
+};
+
+const ApplyLeaveForm = (): React.JSX.Element => {
   const handleSubmit = async (
-    _values: LeaveFormValues,
+    values: LeaveFormValues,
     { resetForm }: FormikHelpers<LeaveFormValues>,
   ): Promise<void> => {
-    const mockDatesRange = ['2024-07-01', '2024-07-02'];
+    const dates = getDatesBetween(values.dateRange);
 
     const leaveData: LeaveApplication = {
       leaveCategoryId: import.meta.env.VITE_ANNUAL_LEAVE_CATEGORY_ID,
-      dates: mockDatesRange,
+      dates,
       duration: 'FULL_DAY',
       startTime: '10:00',
       description: 'Leave',
@@ -36,17 +50,24 @@ const LeaveForm = (): React.JSX.Element => {
       resetForm();
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        console.error(error.response?.data);
+        toast.error(error.response?.data || 'Leave Application submission failed');
       } else {
-        console.error('Unexpected Error', error);
+        toast.error('Unexpected Error Occurred');
       }
     }
   };
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-      {({ isSubmitting }) => (
+      {({ isSubmitting, values, setFieldValue }) => (
         <Form className="flex flex-col gap-4 p-4 w-full">
+          <label>Date Range</label>
+          <DatePicker
+            date={values.dateRange}
+            setDate={(newDateRange) => setFieldValue('dateRange', newDateRange)}
+            className="w-full cursor-pointer"
+          />
+
           <Button
             type="submit"
             disabled={isSubmitting}
@@ -60,4 +81,4 @@ const LeaveForm = (): React.JSX.Element => {
   );
 };
 
-export default LeaveForm;
+export default ApplyLeaveForm;
