@@ -26,6 +26,9 @@ const initialValues: LeaveFormValues = {
   description: '',
 };
 
+const FULL_DAY_DURATION_HOURS = 8;
+const HALF_DAY_DURATION_HOURS = 4;
+
 const getDatesBetween = (range: DateRange | undefined): string[] => {
   const noDatesSelected = !range || !range.from;
   if (noDatesSelected) return [];
@@ -93,6 +96,15 @@ const ApplyLeaveForm = ({ refresh }: { refresh: () => Promise<void> }): React.JS
     }
   };
 
+  const addHours = (timeString: string, noOfHours: number): string => {
+    if (!timeString) return '';
+    const [hours, minutes] = timeString.split(':');
+    const date = new Date();
+    date.setHours(parseInt(hours) + noOfHours);
+    date.setMinutes(parseInt(minutes));
+    return date.toTimeString().slice(0, 5);
+  };
+
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
       {({ isSubmitting, values, setFieldValue }) => (
@@ -142,14 +154,31 @@ const ApplyLeaveForm = ({ refresh }: { refresh: () => Promise<void> }): React.JS
             </Field>
           </div>
 
-          <div className="flex flex-col">
-            <label htmlFor="startTime">Start Time</label>
-            <Field
-              type="time"
-              id="startTime"
-              name="startTime"
-              className="px-3 py-2 rounded-lg border border-neutral-300 bg-white text-sm cursor-pointer"
-            />
+          <div className="flex justify-between gap-3">
+            <div className="flex flex-1 flex-col">
+              <label htmlFor="startTime">Start Time</label>
+              <Field
+                type="time"
+                id="startTime"
+                name="startTime"
+                className="px-3 py-2 rounded-lg border border-neutral-300 bg-white text-sm cursor-pointer"
+              />
+            </div>
+
+            <div className="flex flex-1 flex-col">
+              <label htmlFor="endTime">End Time</label>
+              <Field
+                type="time"
+                id="endTime"
+                name="endTime"
+                value={
+                  values.duration === 'FULL_DAY'
+                    ? addHours(values.startTime, FULL_DAY_DURATION_HOURS)
+                    : addHours(values.startTime, HALF_DAY_DURATION_HOURS)
+                }
+                className="px-3 py-2 rounded-lg border border-neutral-300 bg-gray-100 text-sm cursor-not-allowed"
+              />
+            </div>
           </div>
 
           <div className="flex flex-col gap-1">
