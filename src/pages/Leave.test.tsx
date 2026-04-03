@@ -64,11 +64,11 @@ describe('Leave Page Component', () => {
   test('renders table columns', async () => {
     renderLeavePage()
     await waitFor(() => {
-      expect(screen.getByText('Type')).toBeInTheDocument()
-      expect(screen.getByText('Date')).toBeInTheDocument()
-      expect(screen.getByText('Duration')).toBeInTheDocument()
-      expect(screen.getByText('Status')).toBeInTheDocument()
-      expect(screen.getByText('Actions')).toBeInTheDocument()
+      expect(screen.getByRole('columnheader', { name: 'Type' })).toBeInTheDocument()
+      expect(screen.getByRole('columnheader', { name: 'Date' })).toBeInTheDocument()
+      expect(screen.getByRole('columnheader', { name: 'Duration' })).toBeInTheDocument()
+      expect(screen.getByRole('columnheader', { name: 'Status' })).toBeInTheDocument()
+      expect(screen.getByRole('columnheader', { name: 'Actions' })).toBeInTheDocument()
     })
   })
 
