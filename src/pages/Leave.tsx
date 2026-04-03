@@ -13,20 +13,33 @@ function Leave(): React.JSX.Element {
   const { leaves, loading, error } = useLeaves(status, "self");
 
   const columns = [
-    { header: 'Type', render: (leave: LeaveResponse) => leave.type },
+    { header: 'Type', render: (leave: LeaveResponse) => <span className="font-medium text-gray-800">{leave.type}</span> },
     { header: 'Date', render: (leave: LeaveResponse) => new Date(leave.date).toLocaleDateString() },
-    { header: 'Duration', render: (leave: LeaveResponse) => leave.duration.replace('_', ' ') },
+    { header: 'Duration', render: (leave: LeaveResponse) => leave.duration.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') },
     {
-      header: 'Status',
-      render: (leave: LeaveResponse) => {
-        const date = new Date(leave.date);
-        const today = new Date();
-        if (date > today) return <span className="text-green-500">Upcoming</span>;
-        if (date.toDateString() === today.toDateString())
-          return <span className="text-blue-500">Ongoing</span>;
-        return <span className="text-red-500">Completed</span>;
-      },
+    header: 'Status',
+    render: (leave: LeaveResponse) => {
+      const date = new Date(leave.date);
+      const today = new Date();
+      if (date > today)
+        return (
+          <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">
+            Upcoming
+          </span>
+        );
+      if (date.toDateString() === today.toDateString())
+        return (
+          <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
+            Ongoing
+          </span>
+        );
+      return (
+        <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded-full">
+          Completed
+        </span>
+      );
     },
+  },
   ];
 
   return (
