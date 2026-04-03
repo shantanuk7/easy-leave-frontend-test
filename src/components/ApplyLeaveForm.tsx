@@ -5,7 +5,7 @@ import { Button } from './ui/button';
 import { applyLeave } from '@/api/leave.api';
 import type { LeaveApplicationRequest } from '@/types/leaves';
 import type { DateRange } from 'react-day-picker';
-import { format, eachDayOfInterval } from 'date-fns';
+import { getDatesBetween } from '@/utils/leaveApplicationForm';
 import DatePicker from './ui/DatePicker';
 import { isAxiosError } from 'axios';
 import useLeaveCategories from '@/hooks/useLeaveCategories';
@@ -28,20 +28,6 @@ const initialValues: LeaveFormValues = {
 
 const FULL_DAY_DURATION_HOURS = 8;
 const HALF_DAY_DURATION_HOURS = 4;
-
-const getDatesBetween = (range: DateRange | undefined): string[] => {
-  const noDatesSelected = !range || !range.from;
-  if (noDatesSelected) return [];
-
-  const startDate = range.from;
-  const endDate = range.to ?? range.from;
-  const allDays = eachDayOfInterval({ start: startDate!, end: endDate! });
-
-  const weekdays = allDays.filter((day) => day.getDay() !== 0 && day.getDay() !== 6);
-  const formattedDays = weekdays.map((day) => format(day, 'yyyy-MM-dd'));
-
-  return formattedDays;
-};
 
 const validate = (values: LeaveFormValues) => {
   const errors: FormikErrors<LeaveFormValues> = {};
