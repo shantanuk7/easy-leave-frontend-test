@@ -9,6 +9,14 @@ export type LeaveResponse = {
   reason: string;
 };
 
+export type LeaveApplication = {
+  leaveCategoryId: string;
+  dates: string[];
+  duration: 'FULL_DAY' | 'HALF_DAY';
+  startTime: string;
+  description: string | undefined;
+};
+
 export type LeaveCategoryResponse = {
   id: string;
   name: string;

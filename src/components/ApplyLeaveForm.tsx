@@ -3,7 +3,7 @@ import { Formik, Form, type FormikHelpers, Field, ErrorMessage, type FormikError
 import { toast } from 'react-hot-toast';
 import { Button } from './ui/button';
 import { applyLeave } from '@/api/leave.api';
-import type { LeaveApplication } from '@/types/leave.type';
+import type { LeaveApplication } from '@/types/leaves';
 import type { DateRange } from 'react-day-picker';
 import { format, eachDayOfInterval } from 'date-fns';
 import DatePicker from './ui/DatePicker';
@@ -15,6 +15,7 @@ type LeaveFormValues = {
   dateRange: DateRange | undefined;
   startTime: string;
   duration: 'FULL_DAY' | 'HALF_DAY';
+  description: string;
 };
 
 const initialValues: LeaveFormValues = {
@@ -22,6 +23,7 @@ const initialValues: LeaveFormValues = {
   dateRange: undefined,
   startTime: '10:00',
   duration: 'FULL_DAY',
+  description: '',
 };
 
 const getDatesBetween = (range: DateRange | undefined): string[] => {
@@ -31,7 +33,9 @@ const getDatesBetween = (range: DateRange | undefined): string[] => {
   const startDate = range.from;
   const endDate = range.to ?? range.from;
   const allDays = eachDayOfInterval({ start: startDate!, end: endDate! });
-  const formattedDays = allDays.map((day) => format(day, 'yyyy-MM-dd'));
+
+  const weekdays = allDays.filter((day) => day.getDay() !== 0 && day.getDay() !== 6);
+  const formattedDays = weekdays.map((day) => format(day, 'yyyy-MM-dd'));
 
   return formattedDays;
 };
@@ -46,6 +50,15 @@ const validate = (values: LeaveFormValues) => {
   if (!values.dateRange || !values.dateRange.from) {
     errors.dateRange = 'Please enter a date';
   }
+
+  if (values.description.trim() === '') {
+    errors.description = 'Description is required';
+  }
+
+  if (values.description.length > 1000) {
+    errors.description = 'Description cannot be over 1000 characters';
+  }
+
   return errors;
 };
 
@@ -63,7 +76,7 @@ const ApplyLeaveForm = ({ refresh }: { refresh: () => Promise<void> }): React.JS
       dates,
       duration: values.duration,
       startTime: values.startTime,
-      description: 'Leave',
+      description: values.description,
     };
 
     try {
@@ -137,6 +150,19 @@ const ApplyLeaveForm = ({ refresh }: { refresh: () => Promise<void> }): React.JS
               name="startTime"
               className="px-3 py-2 rounded-lg border border-neutral-300 bg-white text-sm cursor-pointer"
             />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label htmlFor="description">Reason</label>
+            <Field
+              as="textarea"
+              id="description"
+              name="description"
+              placeholder="Reason for taking leave..."
+              rows="4"
+              className="px-3 py-2 rounded-lg border border-neutral-300 bg-white text-sm"
+            />
+            <ErrorMessage name="description" component="p" className="text-sm text-red-700" />
           </div>
 
           <Button
