@@ -100,7 +100,7 @@ const ApplyLeaveForm = ({
       {({ isSubmitting, values, setFieldValue }) => (
         <Form className="flex flex-col gap-4 p-4 w-full">
           <div className="flex flex-col gap-1">
-            <label htmlFor="leaveCategory">Leave Category</label>
+            <label htmlFor="leaveCategoryId">Leave Category</label>
             {categoriesError && <p className="text-sm text-red-700">{categoriesError}</p>}
             <Field
               as="select"
