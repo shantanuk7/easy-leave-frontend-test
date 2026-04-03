@@ -31,7 +31,7 @@ function useLeaves(status: LeaveStatus, scope: LeaveScope): UseLeavesReturn {
 
   useEffect(() => {
     loadLeaves();
-  }, []);
+  }, [status, scope]);
 
   return { leaves, loading, error, refreshLeaves: loadLeaves };
 }
