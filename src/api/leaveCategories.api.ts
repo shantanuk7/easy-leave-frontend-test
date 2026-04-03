@@ -1,5 +1,5 @@
 import type { LeaveCategoryResponse } from '../types/leaves';
-import axiosInstance from './axiosinstance';
+import axiosInstance from './axiosInstance';
 
 export const fetchLeaveCategories = async (): Promise<LeaveCategoryResponse[]> => {
   const { data } = await axiosInstance.get('/api/leave-categories');

@@ -1,7 +1,7 @@
 import type { LeaveScope, LeaveStatus } from '../constants/LeaveStatus';
 import type { LeaveResponse } from '../types/leaves';
 import type { LeaveApplication } from '@/types/leave.type';
-import axiosInstance from './axiosinstance';
+import axiosInstance from './axiosInstance';
 
 type Props = {
   status?: LeaveStatus;
