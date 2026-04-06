@@ -3,24 +3,60 @@ import { describe, expect, test, vi, beforeEach } from 'vitest';
 import ApplyLeaveForm from './ApplyLeaveForm';
 import * as leaveCategoriesApi from '@/api/leaveCategories.api';
 import userEvent from '@testing-library/user-event';
+import type { LeaveApplicationRequest, LeaveApplicationResponse } from '@/types/leaves';
+import * as leaveApi from '@/api/leave.api';
+import type { DateRange } from 'react-day-picker';
+import { getDatesBetween } from '@/utils/time';
+
+// Monday, April 6, 2026
+const mockToday = new Date(2026, 3, 6);
 
 const mockCategories = [
   { id: '1', name: 'Annual Leave' },
   { id: '2', name: 'Bereavement Leave' },
 ];
 
-describe('ApplyLeaveForm', () => {
-  const mockRefreshLeaves = vi.fn();
+const mockLeaveApplicationRequest: LeaveApplicationRequest = {
+  leaveCategoryId: '1',
+  dates: getDatesBetween({ from: mockToday, to: undefined }),
+  startTime: '10:00',
+  duration: 'FULL_DAY',
+  description: 'Test',
+};
 
+const mockLeaveApplicationResponse: LeaveApplicationResponse[] = [
+  {
+    id: '123',
+    date: mockToday.toISOString(),
+    leaveCategoryName: 'Annual Leave',
+    duration: 'FULL_DAY',
+    startTime: '10:00',
+    description: 'Test',
+  },
+];
+
+const renderApplyLeaveForm = () => {
+  render(<ApplyLeaveForm refreshLeaves={vi.fn()} />);
+};
+
+vi.mock('./DatePicker', () => ({
+  default: ({ setDate }: { setDate: (range: DateRange) => void }) => (
+    <button type="button" onClick={() => setDate({ from: mockToday, to: undefined })}>
+      Pick a date
+    </button>
+  ),
+}));
+
+describe('ApplyLeaveForm', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
     vi.spyOn(leaveCategoriesApi, 'fetchLeaveCategories').mockResolvedValue(mockCategories);
+    vi.spyOn(leaveApi, 'applyLeave').mockResolvedValue(mockLeaveApplicationResponse);
   });
 
   test('renders all form fields', async () => {
-    render(<ApplyLeaveForm refreshLeaves={mockRefreshLeaves} />);
-
+    renderApplyLeaveForm();
     expect(await screen.findByLabelText('Leave Category')).toBeInTheDocument();
 
     expect(screen.getByText('Pick a date')).toBeInTheDocument();
@@ -32,7 +68,7 @@ describe('ApplyLeaveForm', () => {
   });
 
   test('display required field validation errors', async () => {
-    render(<ApplyLeaveForm refreshLeaves={mockRefreshLeaves} />);
+    renderApplyLeaveForm();
 
     await screen.findByLabelText('Leave Category');
 
@@ -44,7 +80,7 @@ describe('ApplyLeaveForm', () => {
   });
 
   test('displays error when description exceeds 1000 characters', async () => {
-    render(<ApplyLeaveForm refreshLeaves={mockRefreshLeaves} />);
+    renderApplyLeaveForm();
 
     const leaveCategoryInput = await screen.findByLabelText('Leave Category');
     await userEvent.selectOptions(leaveCategoryInput, '1');
@@ -55,5 +91,21 @@ describe('ApplyLeaveForm', () => {
 
     const validationErrors = await screen.findByTestId('errors-description-input');
     expect(validationErrors.innerHTML).toBe('Description cannot be over 1000 characters');
+  });
+
+  test('submits form with correct data', async () => {
+    renderApplyLeaveForm();
+
+    const leaveCategoryInput = await screen.findByLabelText('Leave Category');
+    await userEvent.selectOptions(leaveCategoryInput, '1');
+
+    await userEvent.click(screen.getByRole('button', { name: 'Pick a date' }));
+
+    const descriptionInput = screen.getByLabelText('Reason');
+    fireEvent.change(descriptionInput, { target: { value: 'Test' } });
+
+    await userEvent.click(screen.getByRole('button', { name: 'Submit Leave' }));
+    expect(leaveApi.applyLeave).toHaveBeenCalledOnce();
+    expect(leaveApi.applyLeave).toHaveBeenCalledWith(mockLeaveApplicationRequest);
   });
 });
