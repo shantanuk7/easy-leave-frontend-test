@@ -24,8 +24,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }): React
       const data = await getAuthenticatedUser();
       setUser(data);
     } catch (err: unknown) {
-      setUser(null);
-
       if (err instanceof Error) {
         setError(err.message);
       } else {
