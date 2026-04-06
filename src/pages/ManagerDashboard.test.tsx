@@ -1,16 +1,16 @@
-import { MemoryRouter } from "react-router-dom";
-import ManagerDashboard from "./ManagerDashboard";
-import { render, screen, waitFor } from "@testing-library/react";
-import type { LeaveResponse } from "@/types/leaves";
-import * as leaveApi from '../api/leave.api'
+import { MemoryRouter } from 'react-router-dom';
+import ManagerDashboard from './ManagerDashboard';
+import { render, screen, waitFor } from '@testing-library/react';
+import type { LeaveResponse } from '@/types/leaves';
+import * as leaveApi from '../api/leave.api';
 
 const renderManagerDashboard = () => {
   return render(
     <MemoryRouter>
       <ManagerDashboard />
-    </MemoryRouter>
+    </MemoryRouter>,
   );
-}
+};
 
 const mockLeaves: LeaveResponse[] = [
   {
@@ -23,28 +23,38 @@ const mockLeaves: LeaveResponse[] = [
     startTime: '09:00',
     reason: 'Vacation',
   },
-]
+];
 
-describe("ManagerDashboard", () => {
+describe('ManagerDashboard', () => {
   beforeEach(() => {
-    vi.spyOn(leaveApi, 'fetchLeaves').mockResolvedValue(mockLeaves)
-  })
+    vi.spyOn(leaveApi, 'fetchLeaves').mockResolvedValue(mockLeaves);
+  });
 
   test('renders page header', () => {
-    renderManagerDashboard()
-    expect(screen.getByText('Manager Dashboard')).toBeInTheDocument()
-    expect(screen.getByText('Team leave overview at a glance')).toBeInTheDocument()
-  })
+    renderManagerDashboard();
+    expect(screen.getByText('Manager Dashboard')).toBeInTheDocument();
+    expect(screen.getByText('Team leave overview at a glance')).toBeInTheDocument();
+  });
+
   test('renders Currently on Leave and Upcoming Leaves sections', () => {
-    renderManagerDashboard()
-    expect(screen.getByText('Currently on Leave')).toBeInTheDocument()
-    expect(screen.getByText('Upcoming Leaves')).toBeInTheDocument()
-  })
+    renderManagerDashboard();
+    expect(screen.getByText('Currently on Leave')).toBeInTheDocument();
+    expect(screen.getByText('Upcoming Leaves')).toBeInTheDocument();
+  });
+
   test('calls fetchLeaves with upcoming status and organization scope', async () => {
-    const spy = vi.spyOn(leaveApi, 'fetchLeaves').mockResolvedValue(mockLeaves)
-    renderManagerDashboard()
+    const spy = vi.spyOn(leaveApi, 'fetchLeaves').mockResolvedValue(mockLeaves);
+    renderManagerDashboard();
     await waitFor(() => {
-      expect(spy).toHaveBeenCalledWith({ status: 'upcoming', scope: 'organization' })
-    })
-  })
+      expect(spy).toHaveBeenCalledWith({ status: 'upcoming', scope: 'organization' });
+    });
+  });
+
+  test('calls fetchLeaves with ongoing status and organization scope', async () => {
+    const spy = vi.spyOn(leaveApi, 'fetchLeaves').mockResolvedValue(mockLeaves);
+    renderManagerDashboard();
+    await waitFor(() => {
+      expect(spy).toHaveBeenCalledWith({ status: 'ongoing', scope: 'organization' });
+    });
+  });
 });
