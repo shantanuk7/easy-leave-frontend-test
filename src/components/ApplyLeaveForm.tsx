@@ -154,6 +154,7 @@ const ApplyLeaveForm = ({
                 type="time"
                 id="endTime"
                 name="endTime"
+                disabled
                 value={
                   values.duration === 'FULL_DAY'
                     ? addHours(values.startTime, FULL_DAY_DURATION_HOURS)
