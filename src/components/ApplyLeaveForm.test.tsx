@@ -7,6 +7,7 @@ import type { LeaveApplicationRequest, LeaveApplicationResponse } from '@/types/
 import * as leaveApi from '@/api/leave.api';
 import type { DateRange } from 'react-day-picker';
 import { getDatesBetween } from '@/utils/time';
+import { toast } from 'react-hot-toast';
 
 // Monday, April 6, 2026
 const mockToday = new Date(2026, 3, 6);
@@ -45,6 +46,13 @@ vi.mock('./DatePicker', () => ({
       Pick a date
     </button>
   ),
+}));
+
+vi.mock('react-hot-toast', () => ({
+  toast: {
+    success: vi.fn(),
+    error: vi.fn(),
+  },
 }));
 
 describe('ApplyLeaveForm', () => {
@@ -107,5 +115,24 @@ describe('ApplyLeaveForm', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Submit Leave' }));
     expect(leaveApi.applyLeave).toHaveBeenCalledOnce();
     expect(leaveApi.applyLeave).toHaveBeenCalledWith(mockLeaveApplicationRequest);
+    expect(toast.success).toHaveBeenCalled();
+  });
+
+  test('displays API error message on submission failure', async () => {
+    const errorMessage = 'Leave application submission failed';
+    vi.spyOn(leaveApi, 'applyLeave').mockRejectedValue(new Error(errorMessage));
+
+    renderApplyLeaveForm();
+
+    const leaveCategoryInput = await screen.findByLabelText('Leave Category');
+    await userEvent.selectOptions(leaveCategoryInput, '1');
+
+    await userEvent.click(screen.getByRole('button', { name: 'Pick a date' }));
+
+    const descriptionInput = screen.getByLabelText('Reason');
+    fireEvent.change(descriptionInput, { target: { value: 'Test' } });
+
+    await userEvent.click(screen.getByRole('button', { name: 'Submit Leave' }));
+    expect(toast.error).toHaveBeenCalled();
   });
 });
