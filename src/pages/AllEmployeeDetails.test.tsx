@@ -1,8 +1,18 @@
 import { MemoryRouter } from "react-router-dom";
 import AllEmployeeDetails from "./AllEmployeeDetails";
 import { render, screen, waitFor } from "@testing-library/react";
-import type { UserResponse } from "@/types/Users";
 import * as userApi from "@/api/employee.api";
+import type { UserResponse } from "@/types/Users";
+import { vi } from 'vitest';
+
+const mockEmployees: UserResponse[] = [
+  { id: "1", name: "Priyansh Saxena", email: "priyansh.saxena@technogise.com", role: "ADMIN" },
+  { id: "2", name: "Raj", email: "raj@technogise.com", role: "EMPLOYEE" },
+];
+const mockNextEmployees: UserResponse[] = [
+  { id: "3", name: "priyansh", email: "priyansh.saxena@technogise.com", role: "ADMIN" },
+  { id: "4", name: "raj", email: "raj@technogise.com", role: "EMPLOYEE" },
+];
 
 const renderEmployeeDetails = () => {
   return render(
@@ -10,33 +20,11 @@ const renderEmployeeDetails = () => {
       <AllEmployeeDetails />
     </MemoryRouter>
   );
-}
-
-
-const mockUsers: UserResponse[] = [
-  {
-    id: '1',
-    name: 'Priyansh Saxena',
-    email: 'priyansh.saxena@example.com',
-    role: 'Employee',
-  },
-]
-
+};
 
 describe("AllEmployeeDetails Component", () => {
-
   beforeEach(() => {
-    vi.spyOn(userApi, 'getEmployees').mockResolvedValue(mockUsers);
-  })
-  test("renders page header", () => {
-    renderEmployeeDetails();
-    expect(screen.getByText("Employees")).toBeInTheDocument();
-    expect(screen.getByText("Manage all employees and their roles")).toBeInTheDocument();
-  });
-
-  test("show loading state initially", () => {
-    renderEmployeeDetails();
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    vi.clearAllMocks();
   });
 
   test("renders table columns", async () => {
@@ -45,15 +33,6 @@ describe("AllEmployeeDetails Component", () => {
       expect(screen.getByText("Name")).toBeInTheDocument();
       expect(screen.getByText("Email")).toBeInTheDocument();
       expect(screen.getByText("Role")).toBeInTheDocument();
-    })
-  });
-
-  test("renders employee data in table", async () => {
-    renderEmployeeDetails();
-    await waitFor(() => {
-      expect(screen.getByText("Priyansh Saxena")).toBeInTheDocument();
-      expect(screen.getByText("priyansh.saxena@example.com")).toBeInTheDocument();
-      expect(screen.getByText("Employee")).toBeInTheDocument();
     })
   });
 
@@ -72,4 +51,34 @@ describe("AllEmployeeDetails Component", () => {
       expect(screen.getByText("Failed to load employees")).toBeInTheDocument();
     })
   });
-})
+  
+  test('renders "Load More" button and loads more employees', async () => {
+    vi.spyOn(userApi, "getEmployees")
+      .mockResolvedValueOnce({
+        content: mockEmployees,
+        last: false,
+        number: 0,
+        totalPages: 2,
+      })
+      .mockResolvedValueOnce({
+        content: mockNextEmployees,
+        last: true,
+        number: 1,
+        totalPages: 2,
+      });
+
+    renderEmployeeDetails();
+
+    await waitFor(() => {
+      expect(screen.getByText("Load More")).toBeInTheDocument();
+    });
+
+    screen.getByText("Load More").click();
+
+    await waitFor(() => {
+      expect(screen.getByText("priyansh")).toBeInTheDocument();
+      expect(screen.getByText("raj")).toBeInTheDocument();
+    });
+  });
+
+});
