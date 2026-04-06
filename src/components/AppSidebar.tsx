@@ -7,7 +7,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton
 } from "@/components/ui/sidebar"
-import { EMPLOYEE_NAV_ITEMS } from "@/constants/navigation"
+import { EMPLOYEE_NAV_ITEMS, MANAGER_NAV_ITEMS } from "@/constants/navigation"
 import type { NavItem } from "@/types/navigation"
 import { CalendarDays } from "lucide-react"
 import { NavLink } from "react-router-dom";
@@ -31,6 +31,26 @@ const AppSidebar  = () : React.JSX.Element => {
           </SidebarGroupLabel>
 
           {EMPLOYEE_NAV_ITEMS.map((item: NavItem) => (
+            <SidebarMenuItem key={item.name}>
+              <NavLink to={item.href}>
+                {({ isActive }) => (
+                  <SidebarMenuButton
+                    isActive={isActive}
+                    className="cursor-pointer mb-1"
+                  >
+                    <item.icon />
+                    <span>{item.name}</span>
+                  </SidebarMenuButton>
+                )}
+              </NavLink>
+            </SidebarMenuItem>
+          ))}
+
+          <SidebarGroupLabel className="text-gray-500 uppercase text-[10px] tracking-widest">
+            Manager
+          </SidebarGroupLabel>
+
+          {MANAGER_NAV_ITEMS.map((item: NavItem) => (
             <SidebarMenuItem key={item.name}>
               <NavLink to={item.href}>
                 {({ isActive }) => (
