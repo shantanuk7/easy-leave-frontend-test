@@ -34,4 +34,19 @@ describe('useLeaveCategories hook', () => {
     expect(result.current.categories).toEqual(mockCategories);
     expect(result.current.error).toBeNull();
   });
+
+  test('should set error when API call fails', async () => {
+    vi.spyOn(leaveCategoryApi, 'fetchLeaveCategories').mockRejectedValue(
+      new Error('failed to fetch categories'),
+    );
+
+    const { result } = renderHook(() => useLeaveCategories());
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
+
+    expect(result.current.error).toBe('failed to fetch categories');
+    expect(result.current.categories).toEqual([]);
+  });
 });
