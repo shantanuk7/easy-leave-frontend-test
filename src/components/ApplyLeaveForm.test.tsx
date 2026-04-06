@@ -167,4 +167,24 @@ describe('ApplyLeaveForm', () => {
     fireEvent.change(startTimeInput, { target: { value: '10:00' } });
     expect(endTimeInput).toHaveValue('14:00');
   });
+
+  test('displays fallback message when axios error has no response message', async () => {
+    const axiosError = {
+      isAxiosError: true,
+      response: { data: {} },
+    };
+    vi.spyOn(leaveApi, 'applyLeave').mockRejectedValue(axiosError);
+
+    renderApplyLeaveForm();
+
+    const leaveCategoryInput = await screen.findByLabelText('Leave Category');
+    await userEvent.selectOptions(leaveCategoryInput, '1');
+    await userEvent.click(screen.getByRole('button', { name: 'Pick a date' }));
+
+    const descriptionInput = screen.getByLabelText('Reason');
+    fireEvent.change(descriptionInput, { target: { value: 'Test' } });
+
+    await userEvent.click(screen.getByRole('button', { name: 'Submit Leave' }));
+    expect(toast.error).toHaveBeenCalledWith('Leave Application submission failed');
+  });
 });
