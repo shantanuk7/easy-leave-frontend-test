@@ -10,8 +10,8 @@ const mockEmployees: UserResponse[] = [
   { id: "2", name: "Raj", email: "raj@technogise.com", role: "EMPLOYEE" },
 ];
 const mockNextEmployees: UserResponse[] = [
-  { id: "3", name: "priyansh", email: "priyansh.saxena@technogise.com", role: "ADMIN" },
-  { id: "4", name: "raj", email: "raj@technogise.com", role: "EMPLOYEE" },
+  { id: "3", name: "jatin", email: "jatin@technogise.com", role: "ADMIN" },
+  { id: "4", name: "rakshit", email: "rakshit@technogise.com", role: "EMPLOYEE" },
 ];
 
 const renderEmployeeDetails = () => {
@@ -76,8 +76,8 @@ describe("AllEmployeeDetails Component", () => {
     screen.getByText("Load More").click();
 
     await waitFor(() => {
-      expect(screen.getByText("priyansh")).toBeInTheDocument();
-      expect(screen.getByText("raj")).toBeInTheDocument();
+      expect(screen.getByText("jatin")).toBeInTheDocument();
+      expect(screen.getByText("rakshit")).toBeInTheDocument();
     });
   });
 
