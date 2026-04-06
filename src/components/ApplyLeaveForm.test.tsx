@@ -120,13 +120,16 @@ describe('ApplyLeaveForm', () => {
 
   test('displays API error message on submission failure', async () => {
     const errorMessage = 'Leave already exists for selected date';
-    vi.spyOn(leaveApi, 'applyLeave').mockRejectedValue(new Error(errorMessage));
+    const axiosError = {
+      isAxiosError: true,
+      response: { data: { message: errorMessage } },
+    };
+    vi.spyOn(leaveApi, 'applyLeave').mockRejectedValue(axiosError);
 
     renderApplyLeaveForm();
 
     const leaveCategoryInput = await screen.findByLabelText('Leave Category');
     await userEvent.selectOptions(leaveCategoryInput, '1');
-
     await userEvent.click(screen.getByRole('button', { name: 'Pick a date' }));
 
     const descriptionInput = screen.getByLabelText('Reason');
@@ -136,20 +139,20 @@ describe('ApplyLeaveForm', () => {
     expect(toast.error).toHaveBeenCalledWith(errorMessage);
   });
 
-  test('displays generic error message when submission fails', async () => {
-    vi.spyOn(leaveApi, 'applyLeave').mockRejectedValue('Leave Application submission failed');
+  test('displays generic error message when submission fails with non-axios error', async () => {
+    vi.spyOn(leaveApi, 'applyLeave').mockRejectedValue(new Error('Network failure'));
+
     renderApplyLeaveForm();
 
     const leaveCategoryInput = await screen.findByLabelText('Leave Category');
     await userEvent.selectOptions(leaveCategoryInput, '1');
-
     await userEvent.click(screen.getByRole('button', { name: 'Pick a date' }));
 
     const descriptionInput = screen.getByLabelText('Reason');
     fireEvent.change(descriptionInput, { target: { value: 'Test' } });
 
     await userEvent.click(screen.getByRole('button', { name: 'Submit Leave' }));
-    expect(toast.error).toHaveBeenCalledWith('Leave Application submission failed');
+    expect(toast.error).toHaveBeenCalledWith('Unexpected Error Occurred');
   });
 
   test('updates the end time field when duration is set to half day', async () => {

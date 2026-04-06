@@ -8,6 +8,7 @@ import type { DateRange } from 'react-day-picker';
 import { getDatesBetween, addHours } from '@/utils/time';
 import DatePicker from './DatePicker';
 import useLeaveCategories from '@/hooks/useLeaveCategories';
+import { isAxiosError } from 'axios';
 
 type LeaveFormValues = {
   leaveCategoryId: string;
@@ -77,8 +78,11 @@ const ApplyLeaveForm = ({
       await refreshLeaves();
       resetForm();
     } catch (error: unknown) {
-      const err = error instanceof Error ? error.message : 'Leave Application submission failed';
-      toast.error(err);
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data?.message || 'Leave Application submission failed');
+      } else {
+        toast.error('Unexpected Error Occurred');
+      }
     }
   };
 
