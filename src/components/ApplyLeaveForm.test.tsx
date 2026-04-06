@@ -151,4 +151,17 @@ describe('ApplyLeaveForm', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Submit Leave' }));
     expect(toast.error).toHaveBeenCalledWith('Leave Application submission failed');
   });
+
+  test('updates the end time field when duration is set to half day', async () => {
+    renderApplyLeaveForm();
+
+    const durationInput = await screen.getByLabelText('Duration');
+    await userEvent.selectOptions(durationInput, 'HALF_DAY');
+
+    const startTimeInput = screen.getByLabelText('Start Time');
+    const endTimeInput = screen.getByLabelText('End Time');
+
+    fireEvent.change(startTimeInput, { target: { value: '10:00' } });
+    expect(endTimeInput).toHaveValue('14:00');
+  });
 });
