@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { getDatesBetween } from './time';
+import { getDatesBetween, addHours } from './time';
 import type { DateRange } from 'react-day-picker';
 
 describe('getDatesBetween', () => {
@@ -32,5 +32,11 @@ describe('getDatesBetween', () => {
     };
 
     expect(getDatesBetween(range)).toEqual(['2026-04-03', '2026-04-06']);
+  });
+});
+
+describe('addHours', () => {
+  test('should return empty string if timeString is empty', () => {
+    expect(addHours('', 2)).toBe('');
   });
 });
