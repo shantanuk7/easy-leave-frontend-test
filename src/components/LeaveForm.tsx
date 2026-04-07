@@ -1,9 +1,10 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage, type FormikHelpers, type FormikErrors } from 'formik';
+import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
 import { Button } from './ui/button';
 import DatePicker from './DatePicker';
 import { addHours } from '@/utils/time';
 import type { LeaveFormValues } from '@/types/leaveForm';
+import { validateLeaveForm } from '@/utils/leaveForm.validation';
 
 type LeaveFormProps = {
   initialValues: LeaveFormValues;
@@ -16,28 +17,6 @@ type LeaveFormProps = {
 const FULL_DAY_DURATION_HOURS = 8;
 const HALF_DAY_DURATION_HOURS = 4;
 
-const validate = (values: LeaveFormValues) => {
-  const errors: FormikErrors<LeaveFormValues> = {};
-
-  if (!values.leaveCategoryId) {
-    errors.leaveCategoryId = 'Leave category is required';
-  }
-
-  if (!values.dateRange || !values.dateRange.from) {
-    errors.dateRange = 'Please enter a date';
-  }
-
-  if (values.description.trim() === '') {
-    errors.description = 'Description is required';
-  }
-
-  if (values.description.length > 1000) {
-    errors.description = 'Description cannot be over 1000 characters';
-  }
-
-  return errors;
-};
-
 const LeaveForm = ({
   initialValues,
   onSubmit,
@@ -46,7 +25,7 @@ const LeaveForm = ({
   categoriesError,
 }: LeaveFormProps): React.JSX.Element => {
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
+    <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validateLeaveForm}>
       {({ isSubmitting, values, setFieldValue }) => (
         <Form className="flex flex-col gap-4 p-4 w-full">
           <div className="flex flex-col gap-1">
