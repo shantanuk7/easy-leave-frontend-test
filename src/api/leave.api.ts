@@ -31,3 +31,12 @@ export const applyLeave = async (
     throw error;
   }
 };
+
+export const fetchLeaveById = async (id: string | undefined): Promise<LeaveResponse> => {
+  const { data } = await axiosInstance.get(`/api/leaves/${id}`);
+  if (!data.success) {
+    console.error(`Error fetching leave with ID ${id}:`, data.message);
+    throw new Error(data.message || `Failed to fetch leave with ID ${id}`);
+  }
+  return data.data;
+};
