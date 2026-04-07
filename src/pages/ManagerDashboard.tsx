@@ -30,7 +30,7 @@ function ManagerDashboard(): React.JSX.Element {
             )}
             {ongoingLeavesError && <p className="text-sm text-red-500">{ongoingLeavesError}</p>}
             {!ongoingLeavesLoading && !ongoingLeavesError && ongoingLeaves.length === 0 ? (
-              <p className="text-sm text-gray-500">No one is currently on leave</p>
+              <p className="text-sm text-gray-500">{ongoingLeavesError}</p>
             ) : (
               ongoingLeaves.map((leave) => (
                 <LeaveCardItem
@@ -57,7 +57,7 @@ function ManagerDashboard(): React.JSX.Element {
             )}
             {upcomingLeavesError && <p className="text-sm text-red-500">{upcomingLeavesError}</p>}
             {!upcomingLeavesLoading && !upcomingLeavesError && upcomingLeaves.length === 0 ? (
-              <p className="text-sm text-gray-500">No upcoming leaves</p>
+              <p className="text-sm text-gray-500">{upcomingLeavesError}</p>
             ) : (
               [...upcomingLeaves]
                 .reverse()
