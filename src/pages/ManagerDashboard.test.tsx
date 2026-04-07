@@ -57,4 +57,12 @@ describe('ManagerDashboard', () => {
       expect(spy).toHaveBeenCalledWith({ status: 'ongoing', scope: 'organization' });
     });
   });
+
+  test('show error message when fetchLeaves fails', async () => {
+    vi.spyOn(leaveApi, 'fetchLeaves').mockRejectedValue(new Error('Failed to fetch leaves'));
+    renderManagerDashboard();
+    await waitFor(() => {
+      expect(screen.getAllByText('Failed to fetch leaves')[0]).toBeInTheDocument();
+    });
+  });
 });
