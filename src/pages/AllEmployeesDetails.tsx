@@ -59,14 +59,7 @@ function AllEmployeesDetails(): React.JSX.Element {
           </div>
         )}
         {error && <p className="p-3 text-red-700">{error}</p>}
-        {!error && (
-          <Table
-            data={employee}
-            columns={columns}
-            message="No employee Found"
-            getRowKey={(employee) => employee.id}
-          />
-        )}
+        {!error && <Table data={employee} columns={columns} message="No employee Found" />}
       </div>
 
       <div className="flex justify-center items-center p-4">

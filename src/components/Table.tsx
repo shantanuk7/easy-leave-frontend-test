@@ -9,18 +9,17 @@ type TableProps<T> = {
   data: T[];
   columns: Column<T>[];
   message: string;
-  getRowKey: (row: T) => string | number;
 };
 
-function Table<T>({ data, columns, message, getRowKey }: TableProps<T>): React.JSX.Element {
+function Table<T>({ data, columns, message }: TableProps<T>): React.JSX.Element {
   return (
-    <div className="w-full bg-white rounded-b-2xl shadow-sm overflow-x-auto">
+    <div className="w-full bg-white rounded-2xl shadow-sm overflow-x-auto">
       <table className="w-full min-w-150 text-sm text-left md:min-w-full">
         <thead className=" text-gray-600 bg-sidebar  p-10 border-b sticky top-0 z-10 border-gray-300 uppercase text-xs tracking-wider">
           <tr>
-            {columns.map((col) => (
+            {columns.map((col, index) => (
               <th
-                key={col.header}
+                key={index}
                 className="px-3 md:px-6 py-3 text-left text-sidebar-foreground font-semibold text-nowrap"
               >
                 {col.header}
@@ -30,13 +29,10 @@ function Table<T>({ data, columns, message, getRowKey }: TableProps<T>): React.J
         </thead>
         <tbody>
           {data.length > 0 ? (
-            data.map((value) => (
-              <tr
-                key={getRowKey(value)}
-                className=" hover:bg-gray-50 transition border-b border-gray-300"
-              >
-                {columns.map((col) => (
-                  <td key={col.header} className="px-3 py-2 md:px-6 md:py-4 wrap-break-words">
+            data.map((value, index) => (
+              <tr key={index} className=" hover:bg-gray-50 transition border-b border-gray-300">
+                {columns.map((col, colIndex) => (
+                  <td key={colIndex} className="px-3 py-2 md:px-6 md:py-4 wrap-break-words">
                     {col.render(value)}
                   </td>
                 ))}
