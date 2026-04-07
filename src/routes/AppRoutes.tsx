@@ -22,7 +22,6 @@ const AppRoutes = (): React.JSX.Element => {
       </Route>
 
       <Route
-        index
         path="/"
         element={
           <PublicRoute>
