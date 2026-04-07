@@ -24,7 +24,7 @@ const renderRoutes = () => {
   );
 };
 
-describe('ProtectedRoute', () => {
+describe('PublicRoute tests', () => {
   test('redirects to /dashboard when user is already authenticated', async () => {
     vi.mocked(useAuthUser).mockReturnValue({
       user: { id: 'uuid', name: 'Raj', email: 'raj@technogise.com', role: 'EMPLOYEE' },

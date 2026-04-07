@@ -24,7 +24,7 @@ const renderRoutes = () => {
   );
 };
 
-describe('ProtectedRoute', () => {
+describe('ProtectedRoute tests', () => {
   test('shows loading when loading is true', () => {
     vi.mocked(useAuthUser).mockReturnValue({
       user: null,
