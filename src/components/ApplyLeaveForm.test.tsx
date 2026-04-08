@@ -83,7 +83,7 @@ describe('ApplyLeaveForm', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Submit Leave' }));
 
     expect(await screen.findByText('Leave category is required')).toBeInTheDocument();
-    expect(screen.getByText('Please enter a date')).toBeInTheDocument();
+    expect(screen.getByText('Please choose a date')).toBeInTheDocument();
     expect(screen.getByText('Reason is required')).toBeInTheDocument();
   });
 

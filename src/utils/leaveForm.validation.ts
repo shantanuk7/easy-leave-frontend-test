@@ -8,7 +8,7 @@ export const validateLeaveForm = (values: LeaveFormValues): FormikErrors<LeaveFo
   }
 
   if (!values.dateRange || !values.dateRange.from) {
-    errors.dateRange = 'Please enter a date';
+    errors.dateRange = 'Please choose a date';
   }
 
   if (!values.description.trim()) {
