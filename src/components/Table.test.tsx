@@ -34,27 +34,27 @@ const renderTable = (data = mockData, columns = mockColumns) => {
 describe('Table Component', () => {
   test('renders Table component content', () => {
     renderTable();
-    expect(screen.getByRole('table')).toBeDefined();
+    expect(screen.getByRole('table')).toBeInTheDocument();
   });
 
   test('renders all column headers correctly', () => {
     renderTable();
-    expect(screen.getByText('ID')).toBeDefined();
-    expect(screen.getByText('Type')).toBeDefined();
-    expect(screen.getByText('Employee Name')).toBeDefined();
-    expect(screen.getByText('Date')).toBeDefined();
+    expect(screen.getByText('ID')).toBeInTheDocument();
+    expect(screen.getByText('Type')).toBeInTheDocument();
+    expect(screen.getByText('Employee Name')).toBeInTheDocument();
+    expect(screen.getByText('Date')).toBeInTheDocument();
   });
 
   test('renders all data values correctly', () => {
     renderTable();
-    expect(screen.getByText('Annual Leave')).toBeDefined();
+    expect(screen.getByText('Annual Leave')).toBeInTheDocument();
   });
 
   test('render single row correctly', () => {
     const singleData = [mockData[0]];
     renderTable(singleData);
-    expect(screen.getByText('Annual Leave')).toBeDefined();
-    expect(screen.getByText('Priyansh Saxena')).toBeDefined();
-    expect(screen.getByText('10/1/2026')).toBeDefined();
+    expect(screen.getByText('Annual Leave')).toBeInTheDocument();
+    expect(screen.getByText('Priyansh Saxena')).toBeInTheDocument();
+    expect(screen.getByText('10/1/2026')).toBeInTheDocument();
   });
 });

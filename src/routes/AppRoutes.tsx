@@ -7,6 +7,7 @@ import PublicRoute from './PublicRoute';
 import { APP_ROUTES } from './routes.config';
 
 const AppRoutes = (): React.JSX.Element => {
+  
   return (
     <Routes>
       <Route

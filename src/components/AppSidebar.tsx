@@ -7,7 +7,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from '@/components/ui/sidebar';
-import { EMPLOYEE_NAV_ITEMS, MANAGER_NAV_ITEMS } from '@/constants/navigation';
+import { ADMIN_NAV_ITEMS, EMPLOYEE_NAV_ITEMS, MANAGER_NAV_ITEMS } from '@/constants/navigation';
 import useAuthUser from '@/hooks/useAuthUser';
 import type { NavItem } from '@/types/navigation';
 import { CalendarDays } from 'lucide-react';
@@ -44,6 +44,26 @@ const AppSidebar = (): React.JSX.Element => {
               </NavLink>
             </SidebarMenuItem>
           ))}
+
+          {user?.role === 'ADMIN' && (
+            <>
+              <SidebarGroupLabel className="text-gray-500 uppercase text-[10px] tracking-widest">
+                ADMIN
+              </SidebarGroupLabel>
+              {ADMIN_NAV_ITEMS.map((item: NavItem) => (
+                <SidebarMenuItem key={item.name}>
+                  <NavLink to={item.href}>
+                    {({ isActive }) => (
+                      <SidebarMenuButton isActive={isActive} className="cursor-pointer mb-1">
+                        <item.icon />
+                        <span>{item.name}</span>
+                      </SidebarMenuButton>
+                    )}
+                  </NavLink>
+                </SidebarMenuItem>
+              ))}
+            </>
+          )}
 
           {user?.role === 'MANAGER' && (
             <>

@@ -47,4 +47,10 @@ describe('AppSidebar Component', () => {
 
     expect(screen.getByText('Manager')).toBeInTheDocument();
   });
+
+  test('renders admin nav items when user role is ADMIN', () => {
+    renderAppSidebar('ADMIN');
+
+    expect(screen.getByText('ADMIN')).toBeInTheDocument();
+  });
 });
