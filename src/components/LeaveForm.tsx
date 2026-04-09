@@ -6,47 +6,38 @@ import { addHours } from '@/utils/time';
 import type { LeaveFormValues } from '@/types/leaveForm';
 import { validateLeaveForm } from '@/utils/leaveForm.validation';
 import { FULL_DAY_DURATION_HOURS, HALF_DAY_DURATION_HOURS } from '@/constants/leaveForm';
+import SelectField from './form/SelectField';
+import useLeaveCategories from '@/hooks/useLeaveCategories';
 
 type LeaveFormProps = {
   initialValues: LeaveFormValues;
-  onSubmit: (values: LeaveFormValues, helpers: FormikHelpers<LeaveFormValues>) => Promise<void>;
-  categories: { id: string; name: string }[];
-  categoriesLoading: boolean;
-  categoriesError?: string | null;
+  onSubmit: (
+    values: LeaveFormValues,
+    helpers: FormikHelpers<LeaveFormValues>,
+  ) => void | Promise<void>;
+  submitLabel?: string;
 };
 
 const LeaveForm = ({
   initialValues,
   onSubmit,
-  categories,
-  categoriesLoading,
-  categoriesError,
+  submitLabel = 'Submit Leave',
 }: LeaveFormProps): React.JSX.Element => {
+  const { categories, loading, error } = useLeaveCategories();
+
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validateLeaveForm}>
       {({ isSubmitting, values, setFieldValue }) => (
         <Form className="flex flex-col gap-4 p-4 w-full">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="leaveCategoryId">Leave Category</label>
-            {categoriesError && <p className="text-sm text-red-700">{categoriesError}</p>}
-            <Field
-              as="select"
-              name="leaveCategoryId"
-              id="leaveCategoryId"
-              disabled={categoriesLoading}
-              className="rounded-md border border-gray-300 bg-gray-50 p-2 cursor-pointer text-sm"
-            >
-              <option value="">
-                {categoriesLoading ? 'Loading categories...' : 'Select a category'}
-              </option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </Field>
-            <ErrorMessage name="leaveCategoryId" component="p" className="text-sm text-red-700" />
-          </div>
+          <SelectField
+            name="leaveCategoryId"
+            id="leaveCategoryId"
+            label="Leave Category"
+            options={categories.map((category) => ({ value: category.id, label: category.name }))}
+            loading={loading}
+            error={error}
+            placeholder="Select a category"
+          />
 
           <div className="flex flex-col gap-1">
             <label htmlFor="date-range-picker" id="date-range-label">
@@ -60,18 +51,15 @@ const LeaveForm = ({
             <ErrorMessage name="dateRange" component="p" className="text-sm text-red-700" />
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="duration">Duration</label>
-            <Field
-              as="select"
-              name="duration"
-              id="duration"
-              className="px-3 py-2 rounded-lg border bg-gray-50 border-neutral-300 text-sm cursor-pointer"
-            >
-              <option value="FULL_DAY">Full Day</option>
-              <option value="HALF_DAY">Half Day</option>
-            </Field>
-          </div>
+          <SelectField
+            name="duration"
+            id="duration"
+            label="Duration"
+            options={[
+              { value: 'FULL_DAY', label: 'Full Day' },
+              { value: 'HALF_DAY', label: 'Half Day' },
+            ]}
+          />
 
           <div className="flex justify-between gap-3">
             <div className="flex flex-1 flex-col">
@@ -124,7 +112,7 @@ const LeaveForm = ({
             disabled={isSubmitting}
             className="w-full bg-(--technogise-blue) cursor-pointer py-5"
           >
-            Submit Leave
+            {submitLabel}
           </Button>
         </Form>
       )}
