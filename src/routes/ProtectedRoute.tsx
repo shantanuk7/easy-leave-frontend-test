@@ -16,7 +16,11 @@ export default function ProtectedRoute({
   const { user, loading } = useAuthUser();
 
   if (loading) {
-    return <Loading />;
+    return (
+      <div className="flex justify-center items-center w-full h-screen">
+        <Loading />
+      </div>
+    );
   }
 
   if (!user) {
