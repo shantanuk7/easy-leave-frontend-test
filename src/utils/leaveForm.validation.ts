@@ -1,5 +1,6 @@
 import type { FormikErrors } from 'formik';
 import type { LeaveFormValues } from '@/types/leaveForm';
+
 export const validateLeaveForm = (values: LeaveFormValues): FormikErrors<LeaveFormValues> => {
   const errors: FormikErrors<LeaveFormValues> = {};
 
