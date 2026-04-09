@@ -11,6 +11,7 @@
 - [ ] Refactor
 - [ ] UI/UX improvement
 - [ ] Chore
+- [ ] Docs
 
 ## Ticket Number
 
