@@ -1,161 +1,94 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage, type FormikHelpers, type FormikErrors } from 'formik';
+import { Formik, Form, type FormikHelpers } from 'formik';
 import { Button } from './ui/button';
-import type { DateRange } from 'react-day-picker';
-import DatePicker from './DatePicker';
+import type { LeaveFormValues } from '@/types/leaves';
+import type { LeaveCategoryResponse } from '@/types/leaveCategory';
+import SelectField from './form/SelectField';
+import DatePickerField from './form/DatePickerField';
+import TimeField from './form/TimeField';
+import TextareaField from './form/TextareaField';
 import { addHours } from '@/utils/time';
-
-export type LeaveFormValues = {
-  leaveCategoryId: string;
-  dateRange: DateRange | undefined;
-  startTime: string;
-  duration: 'FULL_DAY' | 'HALF_DAY';
-  description: string;
-};
+import { validateLeave } from '@/utils/leaveValidation';
+import { FULL_DAY_DURATION_HOURS, HALF_DAY_DURATION_HOURS } from '@/constants/leaveDuration';
 
 type LeaveFormProps = {
   initialValues: LeaveFormValues;
-  onSubmit: (values: LeaveFormValues, helpers: FormikHelpers<LeaveFormValues>) => Promise<void>;
-  categories: { id: string; name: string }[];
-  categoriesLoading: boolean;
-  categoriesError?: string | null;
-};
-
-const FULL_DAY_DURATION_HOURS = 8;
-const HALF_DAY_DURATION_HOURS = 4;
-
-const validate = (values: LeaveFormValues) => {
-  const errors: FormikErrors<LeaveFormValues> = {};
-
-  if (!values.leaveCategoryId) {
-    errors.leaveCategoryId = 'Leave category is required';
-  }
-
-  if (!values.dateRange || !values.dateRange.from) {
-    errors.dateRange = 'Please enter a date';
-  }
-
-  if (values.description.trim() === '') {
-    errors.description = 'Description is required';
-  }
-
-  if (values.description.length > 1000) {
-    errors.description = 'Description cannot be over 1000 characters';
-  }
-
-  return errors;
+  handleSubmit: (
+    values: LeaveFormValues,
+    formikHelpers: FormikHelpers<LeaveFormValues>,
+  ) => void | Promise<void>;
+  submitLabel?: string;
+  categories?: LeaveCategoryResponse[];
+  categoriesLoading?: boolean;
+  datePickerMode?: 'range' | 'single';
 };
 
 const LeaveForm = ({
   initialValues,
-  onSubmit,
-  categories,
+  handleSubmit,
+  submitLabel = 'Submit Leave',
+  categories = [],
   categoriesLoading,
-  categoriesError,
 }: LeaveFormProps): React.JSX.Element => {
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
-      {({ isSubmitting, values, setFieldValue }) => (
+    <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validateLeave}>
+      {({ values, isSubmitting }) => (
         <Form className="flex flex-col gap-4 p-4 w-full">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="leaveCategoryId">Leave Category</label>
-            {categoriesError && <p className="text-sm text-red-700">{categoriesError}</p>}
-            <Field
-              as="select"
-              name="leaveCategoryId"
-              id="leaveCategoryId"
-              disabled={categoriesLoading}
-              className="rounded-md border border-gray-300 bg-gray-50 p-2 cursor-pointer text-sm"
-            >
-              <option value="">
-                {categoriesLoading ? 'Loading categories...' : 'Select a category'}
-              </option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </Field>
-            <ErrorMessage name="leaveCategoryId" component="p" className="text-sm text-red-700" />
-          </div>
+          <SelectField
+            name="leaveCategoryId"
+            id="leaveCategoryId"
+            label="Leave Category"
+            options={categories.map((category) => ({ value: category.id, label: category.name }))}
+            loading={categoriesLoading}
+            placeholder="Select a category"
+          />
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="date-range-picker" id="date-range-label">
-              Date Range
-            </label>
-            <DatePicker
-              date={values.dateRange}
-              setDate={(newDateRange) => setFieldValue('dateRange', newDateRange)}
-              className="w-full cursor-pointer"
-            />
-            <ErrorMessage name="dateRange" component="p" className="text-sm text-red-700" />
-          </div>
+          <DatePickerField
+            name="dateRange"
+            label="Date Range"
+            mode="range"
+            value={values.dateRange}
+          />
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="duration">Duration</label>
-            <Field
-              as="select"
-              name="duration"
-              id="duration"
-              className="px-3 py-2 rounded-lg border bg-gray-50 border-neutral-300 text-sm cursor-pointer"
-            >
-              <option value="FULL_DAY">Full Day</option>
-              <option value="HALF_DAY">Half Day</option>
-            </Field>
-          </div>
+          <SelectField
+            name="duration"
+            id="duration"
+            label="Duration"
+            options={[
+              { value: 'FULL_DAY', label: 'Full Day' },
+              { value: 'HALF_DAY', label: 'Half Day' },
+            ]}
+          />
 
           <div className="flex justify-between gap-3">
-            <div className="flex flex-1 flex-col">
-              <label htmlFor="startTime">Start Time</label>
-              <Field
-                type="time"
-                id="startTime"
-                name="startTime"
-                className="px-3 py-2 rounded-lg border border-neutral-300 bg-gray-50 text-sm cursor-pointer"
-              />
-            </div>
+            <TimeField name="startTime" id="startTime" label="Start Time" />
 
-            <div className="flex flex-1 flex-col">
-              <label htmlFor="endTime">End Time</label>
-              <Field
-                type="time"
-                id="endTime"
-                name="endTime"
-                disabled
-                value={
-                  values.duration === 'FULL_DAY'
-                    ? addHours(values.startTime, FULL_DAY_DURATION_HOURS)
-                    : addHours(values.startTime, HALF_DAY_DURATION_HOURS)
-                }
-                className="px-3 py-2 rounded-lg border border-neutral-300 bg-gray-100 text-sm cursor-not-allowed"
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label htmlFor="description">Reason</label>
-            <Field
-              as="textarea"
-              id="description"
-              name="description"
-              placeholder="Reason for taking leave..."
-              rows="4"
-              className="px-3 py-2 rounded-lg border border-neutral-300 bg-gray-50 text-sm"
-            />
-            <ErrorMessage
-              name="description"
-              component="p"
-              data-testid="errors-description-input"
-              className="text-sm text-red-700"
+            <TimeField
+              name="endTime"
+              id="endTime"
+              label="End Time"
+              disabled
+              value={
+                values.duration === 'FULL_DAY'
+                  ? addHours(values.startTime, FULL_DAY_DURATION_HOURS)
+                  : addHours(values.startTime, HALF_DAY_DURATION_HOURS)
+              }
             />
           </div>
+
+          <TextareaField
+            name="description"
+            id="description"
+            label="Reason"
+            placeholder="Reason for taking leave..."
+          />
 
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-(--technogise-blue) cursor-pointer py-5"
+            className="w-full bg-(--technogise-blue) cursor-pointer "
           >
-            Submit Leave
+            {submitLabel}
           </Button>
         </Form>
       )}
