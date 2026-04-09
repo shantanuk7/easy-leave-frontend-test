@@ -24,10 +24,22 @@ export const fetchLeaves = async ({ status, scope = 'self' }: Props): Promise<Le
 export const applyLeave = async (
   leaveData: LeaveApplicationRequest,
 ): Promise<LeaveApplicationResponse[]> => {
-  const { data } = await axiosInstance.post('/api/leaves', leaveData);
+  const { data } = await axiosInstance.post<ApiResponse<LeaveApplicationResponse[]>>(
+    '/api/leaves',
+    leaveData,
+  );
   if (!data.success) {
     console.error('Error applying for leave:', data.message);
     throw new Error(data.message || 'Failed to apply for leave');
+  }
+  return data.data;
+};
+
+export const fetchLeaveById = async (id: string | undefined): Promise<LeaveResponse> => {
+  const { data } = await axiosInstance.get<ApiResponse<LeaveResponse>>(`/api/leaves/${id}`);
+  if (!data.success) {
+    console.error(`Error fetching leave with ID ${id}:`, data.message);
+    throw new Error(data.message || `Failed to fetch leave with ID ${id}`);
   }
   return data.data;
 };
