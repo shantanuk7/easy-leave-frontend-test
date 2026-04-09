@@ -2,16 +2,16 @@ import React from 'react';
 import type { FormikHelpers } from 'formik';
 import { toast } from 'react-hot-toast';
 import { applyLeave } from '@/api/leave.api';
-import type { LeaveApplicationRequest } from '@/types/leaves';
+import type { LeaveApplicationRequest, LeaveFormValues } from '@/types/leaves';
 import { getDatesBetween } from '@/utils/time';
 import { isAxiosError } from 'axios';
 import useLeaveCategories from '@/hooks/useLeaveCategories';
 
-import LeaveForm, { type LeaveFormValues } from './LeaveForm';
+import LeaveForm from './LeaveForm';
 
 const initialValues: LeaveFormValues = {
   leaveCategoryId: '',
-  dateRange: undefined,
+  dateRange: { from: undefined, to: undefined },
   startTime: '10:00',
   duration: 'FULL_DAY',
   description: '',
@@ -22,7 +22,7 @@ const ApplyLeaveForm = ({
 }: {
   refreshLeaves: () => Promise<void>;
 }): React.JSX.Element => {
-  const { categories, loading, error } = useLeaveCategories();
+  const { categories, loading } = useLeaveCategories();
 
   const handleSubmit = async (
     values: LeaveFormValues,
@@ -53,10 +53,9 @@ const ApplyLeaveForm = ({
   return (
     <LeaveForm
       initialValues={initialValues}
-      onSubmit={handleSubmit}
+      handleSubmit={handleSubmit}
       categories={categories}
       categoriesLoading={loading}
-      categoriesError={error}
     />
   );
 };
