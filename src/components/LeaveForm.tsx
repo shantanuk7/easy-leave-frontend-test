@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
+import { Formik, Form, Field, type FormikHelpers } from 'formik';
 import { Button } from './ui/button';
 import { addHours } from '@/utils/time';
 import type { LeaveFormValues } from '@/types/leaveForm';
@@ -8,6 +8,7 @@ import { FULL_DAY_DURATION_HOURS, HALF_DAY_DURATION_HOURS } from '@/constants/le
 import SelectField from './form/SelectField';
 import useLeaveCategories from '@/hooks/useLeaveCategories';
 import DatePickerField from './form/DatePickerField';
+import TextareaField from './form/TextareaField';
 
 type LeaveFormProps = {
   initialValues: LeaveFormValues;
@@ -86,23 +87,12 @@ const LeaveForm = ({
             </div>
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="description">Reason</label>
-            <Field
-              as="textarea"
-              id="description"
-              name="description"
-              placeholder="Reason for taking leave..."
-              rows="4"
-              className="px-3 py-2 rounded-lg border border-neutral-300 bg-gray-50 text-sm"
-            />
-            <ErrorMessage
-              name="description"
-              component="p"
-              data-testid="errors-description-input"
-              className="text-sm text-red-700"
-            />
-          </div>
+          <TextareaField
+            name="description"
+            id="description"
+            label="Reason"
+            placeholder="Reason for taking leave..."
+          />
 
           <Button
             type="submit"
