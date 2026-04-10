@@ -45,6 +45,12 @@ function Leave(): React.JSX.Element {
     },
   ];
 
+  const handleRowClick = (leave: LeaveResponse): void => {
+    if (new Date(leave.date) > new Date()) {
+      navigate(`/leave/${leave.id}`);
+    }
+  };
+
   return (
     <div className="w-full md:h-screen flex flex-col p-4">
       <PageHeader pageTitle="Leaves" pageSubtitle="View and manage your leaves" />
@@ -72,7 +78,7 @@ function Leave(): React.JSX.Element {
                 columns={columns}
                 message="No leave records found."
                 getRowKey={(leave: LeaveResponse) => leave.id}
-                onRowClick={(leave) => navigate(`/leave/${leave.id}`)}
+                onRowClick={handleRowClick}
               />
             )}
           </div>
