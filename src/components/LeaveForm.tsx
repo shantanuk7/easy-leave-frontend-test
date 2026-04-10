@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form, Field, type FormikHelpers } from 'formik';
+import { Formik, Form, type FormikHelpers } from 'formik';
 import { Button } from './ui/button';
 import { addHours } from '@/utils/time';
 import type { LeaveFormValues } from '@/types/leaveForm';
@@ -9,6 +9,7 @@ import SelectField from './form/SelectField';
 import useLeaveCategories from '@/hooks/useLeaveCategories';
 import DatePickerField from './form/DatePickerField';
 import TextareaField from './form/TextareaField';
+import TimeField from './form/TimeField';
 
 type LeaveFormProps = {
   initialValues: LeaveFormValues;
@@ -60,31 +61,19 @@ const LeaveForm = ({
           />
 
           <div className="flex justify-between gap-3">
-            <div className="flex flex-1 flex-col">
-              <label htmlFor="startTime">Start Time</label>
-              <Field
-                type="time"
-                id="startTime"
-                name="startTime"
-                className="px-3 py-2 rounded-lg border border-neutral-300 bg-gray-50 text-sm cursor-pointer"
-              />
-            </div>
+            <TimeField name="startTime" id="startTime" label="Start Time" />
 
-            <div className="flex flex-1 flex-col">
-              <label htmlFor="endTime">End Time</label>
-              <Field
-                type="time"
-                id="endTime"
-                name="endTime"
-                disabled
-                value={
-                  values.duration === 'FULL_DAY'
-                    ? addHours(values.startTime, FULL_DAY_DURATION_HOURS)
-                    : addHours(values.startTime, HALF_DAY_DURATION_HOURS)
-                }
-                className="px-3 py-2 rounded-lg border border-neutral-300 bg-gray-100 text-sm cursor-not-allowed"
-              />
-            </div>
+            <TimeField
+              name="endTime"
+              id="endTime"
+              label="End Time"
+              disabled
+              value={
+                values.duration === 'FULL_DAY'
+                  ? addHours(values.startTime, FULL_DAY_DURATION_HOURS)
+                  : addHours(values.startTime, HALF_DAY_DURATION_HOURS)
+              }
+            />
           </div>
 
           <TextareaField
