@@ -3,7 +3,7 @@ import { Formik, Form, type FormikHelpers } from 'formik';
 import { Button } from './ui/button';
 import { addHours } from '@/utils/time';
 import type { LeaveFormValues } from '@/types/leaveForm';
-import { validateLeaveForm } from '@/utils/leaveForm.validation';
+import { validateLeaveForm } from '@/utils/leaveForm';
 import { FULL_DAY_DURATION_HOURS, HALF_DAY_DURATION_HOURS } from '@/constants/leaveForm';
 import SelectField from './form/SelectField';
 import useLeaveCategories from '@/hooks/useLeaveCategories';
