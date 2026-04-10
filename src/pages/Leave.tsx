@@ -8,9 +8,11 @@ import Loading from '@/components/Loading';
 import useLeaves from '@/hooks/useLeaves';
 import Badge from '@/components/Badge';
 import ApplyLeaveForm from '@/components/ApplyLeaveForm';
+import { useNavigate } from 'react-router-dom';
 
 function Leave(): React.JSX.Element {
   const [status, setStatus] = useState<LeaveStatus>('all');
+  const navigate = useNavigate();
 
   const { leaves, loading, error, refreshLeaves } = useLeaves(status, 'self');
 
@@ -69,6 +71,7 @@ function Leave(): React.JSX.Element {
                 columns={columns}
                 message="No leave records found."
                 getRowKey={(leave: LeaveResponse) => leave.id}
+                onRowClick={(leave) => navigate(`/leave/${leave.id}`)}
               />
             )}
           </div>

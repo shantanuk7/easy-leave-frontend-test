@@ -10,9 +10,16 @@ type TableProps<T> = {
   columns: Column<T>[];
   message: string;
   getRowKey: (row: T) => string | number;
+  onRowClick?: (row: T) => void;
 };
 
-function Table<T>({ data, columns, message, getRowKey }: TableProps<T>): React.JSX.Element {
+function Table<T>({
+  data,
+  columns,
+  message,
+  getRowKey,
+  onRowClick,
+}: TableProps<T>): React.JSX.Element {
   return (
     <div className="w-full bg-white rounded-b-2xl shadow-sm overflow-x-auto">
       <table className="w-full min-w-150 text-sm text-left md:min-w-full">
@@ -33,7 +40,8 @@ function Table<T>({ data, columns, message, getRowKey }: TableProps<T>): React.J
             data.map((value) => (
               <tr
                 key={getRowKey(value)}
-                className=" hover:bg-gray-50 transition border-b border-gray-300"
+                onClick={() => onRowClick?.(value)}
+                className={`hover:bg-gray-50 transition border-b border-gray-300 ${onRowClick ? 'cursor-pointer' : ''}`}
               >
                 {columns.map((col) => (
                   <td key={col.header} className="px-3 py-2 md:px-6 md:py-4 wrap-break-words">
