@@ -27,12 +27,6 @@ This feature adds a new page for managers to view a list of all employees along 
 - Shows error message if API fails
 - Shows empty state if no employees found
 
-## Tech Stack
-
-- React
-- Custom `useEmployees` hook with pagination support
-- API calls: `fetchEmployees` and `fetchYears`
-
 ## How to Use
 
 1. Log in as a manager
