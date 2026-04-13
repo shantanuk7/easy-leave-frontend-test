@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import Table from '../components/Table';
 import PageHeader from '../components/PageHeader';
 import Loading from '@/components/Loading';
-import useEmployees from '@/hooks/useEmployees';
-import type { EmployeeLeaveRecord } from '../types/employees';
+import useEmployeesLeaveBalance from '@/hooks/useEmployeesLeaveBalance';
+import type { EmployeeLeaveRecord } from '../types/employeeLeaveBalance';
 import FilterDropdown from '@/components/FilterDropdown';
 import { fetchYears } from '@/api/employeesLeaveBalance.api';
 
 function AllEmployeesLeaveBalance(): React.JSX.Element {
   const [years, setYears] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>('');
-  const { employees, loading, error, hasMore, loadMore } = useEmployees(selectedYear);
+  const { employees, loading, error, hasMore, loadMore } = useEmployeesLeaveBalance(selectedYear);
 
   useEffect(() => {
     async function loadYears() {

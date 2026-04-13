@@ -4,8 +4,8 @@ import { describe, expect, test, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import Employees from './AllEmployeesLeaveBalance';
 import * as employeesApi from '../api/employeesLeaveBalance.api';
-import * as useEmployeesHook from '../hooks/useEmployees';
-import type { EmployeeLeaveRecord } from '../types/employees';
+import * as useEmployeesLeaveBalanceHook from '../hooks/useEmployeesLeaveBalance';
+import type { EmployeeLeaveRecord } from '../types/employeeLeaveBalance';
 
 const mockEmployees: EmployeeLeaveRecord[] = [
   {
@@ -36,7 +36,7 @@ vi.mock('../api/employeesLeaveBalance.api', () => ({
   fetchYears: vi.fn().mockResolvedValue(['2026', '2025', '2024']),
 }));
 
-vi.mock('@/hooks/useEmployees', () => ({
+vi.mock('@/hooks/useEmployeesLeaveBalance', () => ({
   default: vi.fn().mockReturnValue({
     employees: [],
     loading: false,
@@ -57,7 +57,7 @@ const renderEmployeesPage = () => {
 describe('Employees Page Component', () => {
   beforeEach(() => {
     vi.mocked(employeesApi.fetchYears).mockResolvedValue(['2026', '2025', '2024']);
-    vi.mocked(useEmployeesHook.default).mockReturnValue(defaultHookValue);
+    vi.mocked(useEmployeesLeaveBalanceHook.default).mockReturnValue(defaultHookValue);
   });
 
   test('renders page header', () => {
@@ -77,12 +77,14 @@ describe('Employees Page Component', () => {
     vi.mocked(employeesApi.fetchYears).mockResolvedValue([]);
     renderEmployeesPage();
     await waitFor(() => {
-      expect(useEmployeesHook.default).toHaveBeenCalledWith(new Date().getFullYear().toString());
+      expect(useEmployeesLeaveBalanceHook.default).toHaveBeenCalledWith(
+        new Date().getFullYear().toString(),
+      );
     });
   });
 
   test('shows loading state', () => {
-    vi.mocked(useEmployeesHook.default).mockReturnValue({
+    vi.mocked(useEmployeesLeaveBalanceHook.default).mockReturnValue({
       ...defaultHookValue,
       loading: true,
     });
@@ -109,7 +111,7 @@ describe('Employees Page Component', () => {
   });
 
   test('shows error message on failure', async () => {
-    vi.mocked(useEmployeesHook.default).mockReturnValue({
+    vi.mocked(useEmployeesLeaveBalanceHook.default).mockReturnValue({
       ...defaultHookValue,
       error: 'Failed to fetch employees',
     });
@@ -120,7 +122,7 @@ describe('Employees Page Component', () => {
   });
 
   test('shows no employees message when list is empty', async () => {
-    vi.mocked(useEmployeesHook.default).mockReturnValue({
+    vi.mocked(useEmployeesLeaveBalanceHook.default).mockReturnValue({
       ...defaultHookValue,
       employees: [],
     });
@@ -131,7 +133,7 @@ describe('Employees Page Component', () => {
   });
 
   test('renders Load More button when hasMore is true', async () => {
-    vi.mocked(useEmployeesHook.default).mockReturnValue({
+    vi.mocked(useEmployeesLeaveBalanceHook.default).mockReturnValue({
       ...defaultHookValue,
       hasMore: true,
     });
@@ -150,7 +152,7 @@ describe('Employees Page Component', () => {
 
   test('calls loadMore when Load More button is clicked', async () => {
     const loadMore = vi.fn();
-    vi.mocked(useEmployeesHook.default).mockReturnValue({
+    vi.mocked(useEmployeesLeaveBalanceHook.default).mockReturnValue({
       ...defaultHookValue,
       hasMore: true,
       loadMore,
@@ -168,7 +170,7 @@ describe('Employees Page Component', () => {
     const dropdown = screen.getByDisplayValue('2026');
     await userEvent.selectOptions(dropdown, '2025');
     await waitFor(() => {
-      expect(useEmployeesHook.default).toHaveBeenCalledWith('2025');
+      expect(useEmployeesLeaveBalanceHook.default).toHaveBeenCalledWith('2025');
     });
   });
 });

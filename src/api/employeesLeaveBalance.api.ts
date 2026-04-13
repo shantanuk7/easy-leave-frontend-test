@@ -1,4 +1,4 @@
-import type { EmployeeLeaveRecord } from '@/types/employees';
+import type { EmployeeLeaveRecord } from '@/types/employeeLeaveBalance';
 import axiosInstance from './axiosInstance';
 import type { PageResponse } from '@/types/pageResponse';
 import type { ApiResponse } from '@/types/response';
@@ -11,7 +11,7 @@ export const fetchYears = async (): Promise<string[]> => {
   }
   return data.data;
 };
-export const fetchEmployees = async (
+export const fetchEmployeesLeaveBalance = async (
   year: string,
   page = 0,
 ): Promise<PageResponse<EmployeeLeaveRecord>> => {
