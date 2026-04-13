@@ -21,7 +21,7 @@ export const MANAGER_NAV_ITEMS: NavItem[] = [
   {
     name: 'All Employees',
     icon: Users,
-    href: '/employees',
+    href: '/manager/employees',
   },
 ];
 export const ADMIN_NAV_ITEMS: NavItem[] = [

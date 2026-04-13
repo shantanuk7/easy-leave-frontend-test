@@ -30,7 +30,7 @@ export const APP_ROUTES: AppRoute[] = [
     roles: ['ADMIN'],
   },
   {
-    path: '/employees',
+    path: '/manager/employees',
     element: <AllEmployeesLeaveBalance />,
     roles: ['MANAGER'],
   },
