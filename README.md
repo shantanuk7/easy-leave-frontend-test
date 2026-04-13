@@ -137,7 +137,7 @@ This feature adds a new page for managers to view a list of all employees along 
 
 ## Manager Dashboard Page
 
-The **Manager Dashboard** provides a centralized overview of team leave activity, enabling managers to monitor employee availability.
+The **Manager Dashboard** provides a centralised overview of all employees' leave activity, enabling managers to monitor employee availability.
 
 ---
 

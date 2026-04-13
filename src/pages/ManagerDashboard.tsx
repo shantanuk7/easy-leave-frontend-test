@@ -84,7 +84,7 @@ function ManagerDashboard(): React.JSX.Element {
               !ongoingLeavesError &&
               (ongoingLeaves.length === 0 ? (
                 <p className="text-sm w-full flex justify-center items-center h-full text-gray-500">
-                  "No Employee On Leave Today"
+                  No Employee On Leave Today
                 </p>
               ) : (
                 ongoingLeaves.map((leave) => (
