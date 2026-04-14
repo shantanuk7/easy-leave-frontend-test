@@ -1,7 +1,7 @@
 import type { ApiResponse } from '@/types/response';
 import axiosInstance from './axiosInstance';
 import type { LeaveScope, LeaveStatus } from '../constants/LeaveStatus';
-import type { LeaveApplicationResponse, LeaveResponse, updateLeaveRequest } from '../types/leaves';
+import type { LeaveApplicationResponse, LeaveResponse, UpdateLeaveRequest } from '../types/leaves';
 import type { LeaveApplicationRequest } from '@/types/leaves';
 
 type Props = {
@@ -46,7 +46,7 @@ export const fetchLeaveById = async (id: string | undefined): Promise<LeaveRespo
 
 export const updateLeave = async (
   id: string | undefined,
-  leaveData: Partial<updateLeaveRequest>,
+  leaveData: Partial<UpdateLeaveRequest>,
 ): Promise<LeaveApplicationResponse> => {
   const { data } = await axiosInstance.patch<ApiResponse<LeaveApplicationResponse>>(
     `/api/leaves/${id}`,

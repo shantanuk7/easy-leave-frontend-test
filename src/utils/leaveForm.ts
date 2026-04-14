@@ -1,6 +1,6 @@
 import type { FormikErrors } from 'formik';
 import type { LeaveFormValues } from '@/types/leaveForm';
-import type { updateLeaveRequest } from '@/types/leaves';
+import type { UpdateLeaveRequest } from '@/types/leaves';
 import { format } from 'date-fns';
 
 export const validateLeaveForm = (values: LeaveFormValues): FormikErrors<LeaveFormValues> => {
@@ -28,8 +28,8 @@ export const validateLeaveForm = (values: LeaveFormValues): FormikErrors<LeaveFo
 export const buildUpdatePayload = (
   updatedValues: LeaveFormValues,
   original: LeaveFormValues,
-): Partial<updateLeaveRequest> => {
-  const payload: Partial<updateLeaveRequest> = {};
+): Partial<UpdateLeaveRequest> => {
+  const payload: Partial<UpdateLeaveRequest> = {};
 
   if (updatedValues.leaveCategoryId !== original.leaveCategoryId) {
     payload.leaveCategoryId = updatedValues.leaveCategoryId;
