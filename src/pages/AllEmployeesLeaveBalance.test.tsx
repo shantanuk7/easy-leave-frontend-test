@@ -103,10 +103,10 @@ describe('Employees Page Component', () => {
   test('renders table columns', async () => {
     renderEmployeesPage();
     await waitFor(() => {
-      expect(screen.getByText('Employee')).toBeInTheDocument();
-      expect(screen.getByText('Total Annual Leaves')).toBeInTheDocument();
-      expect(screen.getByText('Leaves Taken')).toBeInTheDocument();
-      expect(screen.getByText('Leaves Remaining')).toBeInTheDocument();
+      expect(screen.getByRole('Employee')).toBeInTheDocument();
+      expect(screen.getByRole('Total Annual Leaves')).toBeInTheDocument();
+      expect(screen.getByRole('Leaves Taken')).toBeInTheDocument();
+      expect(screen.getByRole('Leaves Remaining')).toBeInTheDocument();
     });
   });
 
