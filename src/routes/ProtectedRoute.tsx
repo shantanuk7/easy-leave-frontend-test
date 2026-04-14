@@ -15,8 +15,12 @@ export default function ProtectedRoute({
 }: ProtectedRouteProps): React.JSX.Element {
   const { user, loading } = useAuthUser();
 
-  if (loading) {
-    return <Loading />;
+  if (loading && !user) {
+    return (
+      <div className="flex justify-center items-center w-full h-screen">
+        <Loading />
+      </div>
+    );
   }
 
   if (!user) {

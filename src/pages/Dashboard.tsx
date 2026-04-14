@@ -6,7 +6,6 @@ import useLeaves from '@/hooks/useLeaves';
 
 function Dashboard(): React.JSX.Element {
   const { leaves, loading, error } = useLeaves('upcoming', 'self');
-
   const columns = [
     {
       header: 'Type',
@@ -30,20 +29,20 @@ function Dashboard(): React.JSX.Element {
     {
       header: 'Reason',
       render: (leave: LeaveResponse) => (
-        <span className="text-gray-600 line-clamp-1 w-50">{leave.reason}</span>
+        <span className="text-gray-600 truncate block max-w-50">{leave.reason}</span>
       ),
     },
   ];
 
   return (
-    <div className="w-full h-screen flex flex-col p-3">
+    <div className="w-full h-screen flex flex-col p-4 ">
       <PageHeader
         pageTitle="Dashboard"
         pageSubtitle="Welcome to your dashboard! Here you can find an overview of your Leaves"
       />
-      <div className="flex flex-col flex-1 min-h-0 w-full mb-5 rounded-2xl shadow-xs border border-neutral-200">
-        <div className="bg-sidebar rounded-t-2xl ">
-          <h1 className="text-2xl text-sidebar-foreground font-bold mb-4 px-4 py-2">
+      <div className="flex flex-col min-h-0 w-full mb-5 md:mt-2 rounded-2xl shadow-xs border border-neutral-200">
+        <div className="bg-sidebar/98 py-2 px-1 rounded-t-2xl ">
+          <h1 className="text-xl md:text-2xl text-sidebar-foreground font-bold mb-4 px-4 py-2">
             Upcoming Leaves
           </h1>
         </div>
