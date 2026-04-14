@@ -25,7 +25,7 @@ function ManagerDashboard(): React.JSX.Element {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMetrics = async () => {
+    const fetchMetrics = async (): Promise<void> => {
       setLoading(true);
       setError(null);
       try {
