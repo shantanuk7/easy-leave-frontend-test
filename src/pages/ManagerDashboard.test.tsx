@@ -93,7 +93,7 @@ describe('ManagerDashboard', () => {
     });
   });
 
-  test('throw error when api is fail to fetch data', async () => {
+  test('displays error message when API rejects with Error object', async () => {
     vi.spyOn(dashboardApi, 'getManagerDashboardMetrics').mockRejectedValue(
       new Error('Failed to fetch data'),
     );
@@ -102,7 +102,7 @@ describe('ManagerDashboard', () => {
       expect(screen.getByText('Failed to fetch data')).toBeInTheDocument();
     });
   });
-  test('throw error when api is fail to fetch data', async () => {
+  test('displays error message on network error', async () => {
     vi.spyOn(dashboardApi, 'getManagerDashboardMetrics').mockRejectedValue(
       'Failed to fetch dashboard metrics',
     );
