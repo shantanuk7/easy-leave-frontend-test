@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { EmployeeLeaveRecord } from '../types/employeeLeaveBalance';
-import { fetchEmployeesLeaveBalance } from '@/api/employeesLeaveBalance.api';
+import { fetchEmployeesLeaveRecord } from '@/api/employeesLeaveBalance.api';
 import type { PageResponse } from '@/types/pageResponse';
 
 function useEmployeesLeaveBalance(year: string): {
@@ -30,10 +30,7 @@ function useEmployeesLeaveBalance(year: string): {
       try {
         setLoading(true);
         setError(null);
-        const data: PageResponse<EmployeeLeaveRecord> = await fetchEmployeesLeaveBalance(
-          year,
-          page,
-        );
+        const data: PageResponse<EmployeeLeaveRecord> = await fetchEmployeesLeaveRecord(year, page);
         setEmployees((prev) => (page === 0 ? data.content : [...prev, ...data.content]));
         setHasMore(!data.last);
       } catch (err) {

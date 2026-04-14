@@ -29,7 +29,7 @@ describe('useEmployeesLeaveBalance hook', () => {
   });
 
   test('should fetch employees successfully', async () => {
-    vi.spyOn(employeesApi, 'fetchEmployeesLeaveBalance').mockResolvedValue(mockPageResponse());
+    vi.spyOn(employeesApi, 'fetchEmployeesLeaveRecord').mockResolvedValue(mockPageResponse());
     const { result } = renderHook(() => useEmployeesLeaveBalance('2026'));
     await waitFor(() => expect(result.current.loading).toBe(false));
     expect(result.current.employees).toEqual([mockEmployee]);
@@ -37,21 +37,21 @@ describe('useEmployeesLeaveBalance hook', () => {
   });
 
   test('should set hasMore false when last page', async () => {
-    vi.spyOn(employeesApi, 'fetchEmployeesLeaveBalance').mockResolvedValue(mockPageResponse(true));
+    vi.spyOn(employeesApi, 'fetchEmployeesLeaveRecord').mockResolvedValue(mockPageResponse(true));
     const { result } = renderHook(() => useEmployeesLeaveBalance('2026'));
     await waitFor(() => expect(result.current.loading).toBe(false));
     expect(result.current.hasMore).toBe(false);
   });
 
   test('should set hasMore true when more pages exist', async () => {
-    vi.spyOn(employeesApi, 'fetchEmployeesLeaveBalance').mockResolvedValue(mockPageResponse(false));
+    vi.spyOn(employeesApi, 'fetchEmployeesLeaveRecord').mockResolvedValue(mockPageResponse(false));
     const { result } = renderHook(() => useEmployeesLeaveBalance('2026'));
     await waitFor(() => expect(result.current.loading).toBe(false));
     expect(result.current.hasMore).toBe(true);
   });
 
   test('should set error on API failure', async () => {
-    vi.spyOn(employeesApi, 'fetchEmployeesLeaveBalance').mockRejectedValue(
+    vi.spyOn(employeesApi, 'fetchEmployeesLeaveRecord').mockRejectedValue(
       new Error('Failed to fetch employees'),
     );
     const { result } = renderHook(() => useEmployeesLeaveBalance('2026'));
@@ -61,13 +61,13 @@ describe('useEmployeesLeaveBalance hook', () => {
   });
 
   test('should not fetch when year is empty', () => {
-    const spy = vi.spyOn(employeesApi, 'fetchEmployeesLeaveBalance');
+    const spy = vi.spyOn(employeesApi, 'fetchEmployeesLeaveRecord');
     renderHook(() => useEmployeesLeaveBalance(''));
     expect(spy).not.toHaveBeenCalled();
   });
 
   test('should append employees on loadMore', async () => {
-    vi.spyOn(employeesApi, 'fetchEmployeesLeaveBalance').mockResolvedValue(mockPageResponse(false));
+    vi.spyOn(employeesApi, 'fetchEmployeesLeaveRecord').mockResolvedValue(mockPageResponse(false));
     const { result } = renderHook(() => useEmployeesLeaveBalance('2026'));
     await waitFor(() => expect(result.current.loading).toBe(false));
     act(() => result.current.loadMore());
@@ -76,7 +76,7 @@ describe('useEmployeesLeaveBalance hook', () => {
   });
 
   test('should reset employees when year changes', async () => {
-    vi.spyOn(employeesApi, 'fetchEmployeesLeaveBalance').mockResolvedValue(mockPageResponse());
+    vi.spyOn(employeesApi, 'fetchEmployeesLeaveRecord').mockResolvedValue(mockPageResponse());
     const { result, rerender } = renderHook(({ year }) => useEmployeesLeaveBalance(year), {
       initialProps: { year: '2026' },
     });
@@ -87,7 +87,7 @@ describe('useEmployeesLeaveBalance hook', () => {
   });
 
   test('should set generic error when API fails with non-Error value', async () => {
-    vi.spyOn(employeesApi, 'fetchEmployeesLeaveBalance').mockRejectedValue('unknown error');
+    vi.spyOn(employeesApi, 'fetchEmployeesLeaveRecord').mockRejectedValue('unknown error');
     const { result } = renderHook(() => useEmployeesLeaveBalance('2026'));
     await waitFor(() => expect(result.current.loading).toBe(false));
     expect(result.current.error).toBe('Something went wrong');
