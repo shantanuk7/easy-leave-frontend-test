@@ -92,6 +92,17 @@ describe('LeaveDetails Page Component', () => {
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
+  test('show go back button and navigate back on click', async () => {
+    renderWithRouter();
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /back/i })).toBeInTheDocument();
+    });
+
+    const backButton = screen.getByRole('button', { name: /back/i });
+    await userEvent.click(backButton);
+  });
+
   test('renders page after data is fetched', async () => {
     renderWithRouter();
 
