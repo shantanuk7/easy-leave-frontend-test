@@ -1,7 +1,7 @@
 import { screen, render, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import * as employeeLeaveBalance from '@/api/employeesLeaveBalance.api';
-import ViewSingleEmployeeLeaveDetail from './ViewSingleEmployeeLeaveDetail';
+import SingleEmployeeLeaveDetails from './SingleEmployeeLeaveDetails';
 
 const mockLeaveRecord = [
   {
@@ -20,17 +20,17 @@ const mockLeaveRecord = [
   },
 ];
 
-const renderViewSingleEmployeeLeaveDetail = () => {
+const renderSingleEmployeeLeaveDetails = () => {
   return render(
     <MemoryRouter initialEntries={['/employee/1']}>
       <Routes>
-        <Route path="/employee/:id" element={<ViewSingleEmployeeLeaveDetail />} />
+        <Route path="/employee/:id" element={<SingleEmployeeLeaveDetails />} />
       </Routes>
     </MemoryRouter>,
   );
 };
 
-describe('ViewSingleEmployeeLeaveDetail', () => {
+describe('SingleEmployeeLeaveDetails', () => {
   beforeEach(() => {
     vi.spyOn(employeeLeaveBalance, 'fetchSingleEmployeeLeaveRecord').mockResolvedValue(
       mockLeaveRecord,
@@ -39,12 +39,12 @@ describe('ViewSingleEmployeeLeaveDetail', () => {
   });
 
   test('shows loading state initially', () => {
-    renderViewSingleEmployeeLeaveDetail();
+    renderSingleEmployeeLeaveDetails();
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
 
   test('renders leave records table with record', async () => {
-    renderViewSingleEmployeeLeaveDetail();
+    renderSingleEmployeeLeaveDetails();
 
     await waitFor(() => {
       expect(screen.getByRole('cell', { name: 'Annual Leave' })).toBeInTheDocument();
@@ -59,7 +59,7 @@ describe('ViewSingleEmployeeLeaveDetail', () => {
       new Error('Error fetching leave record'),
     );
 
-    renderViewSingleEmployeeLeaveDetail();
+    renderSingleEmployeeLeaveDetails();
 
     await waitFor(() => {
       expect(screen.getByText('Error fetching leave record')).toBeInTheDocument();
@@ -71,7 +71,7 @@ describe('ViewSingleEmployeeLeaveDetail', () => {
       'Failed to fetch leave record',
     );
 
-    renderViewSingleEmployeeLeaveDetail();
+    renderSingleEmployeeLeaveDetails();
 
     await waitFor(() => {
       expect(screen.getByText('Failed to fetch leave record')).toBeInTheDocument();
@@ -83,7 +83,7 @@ describe('ViewSingleEmployeeLeaveDetail', () => {
 
     vi.spyOn(employeeLeaveBalance, 'fetchYears').mockResolvedValue([]);
 
-    renderViewSingleEmployeeLeaveDetail();
+    renderSingleEmployeeLeaveDetails();
 
     await waitFor(() => {
       expect(employeeLeaveBalance.fetchSingleEmployeeLeaveRecord).toHaveBeenCalledWith(

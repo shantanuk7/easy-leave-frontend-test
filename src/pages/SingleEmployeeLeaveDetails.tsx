@@ -6,7 +6,7 @@ import type { SingleEmployeeLeaveRecord } from '@/types/employeeLeaveBalance';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-function ViewSingleEmployeeLeaveDetail(): React.JSX.Element {
+function SingleEmployeeLeaveDetails(): React.JSX.Element {
   const { id } = useParams();
   const [leavesRecord, setLeavesRecord] = useState<SingleEmployeeLeaveRecord[] | null>(null);
   const [leavesRecordloading, setLeavesRecordLoading] = useState(false);
@@ -75,4 +75,4 @@ function ViewSingleEmployeeLeaveDetail(): React.JSX.Element {
   );
 }
 
-export default ViewSingleEmployeeLeaveDetail;
+export default SingleEmployeeLeaveDetails;

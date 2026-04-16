@@ -4,7 +4,7 @@ import Leave from '@/pages/Leave';
 import ManagerDashboard from '@/pages/ManagerDashboard';
 import AllEmployeesDetails from '@/pages/AllEmployeesDetails';
 import AllEmployeesLeaveBalance from '@/pages/AllEmployeesLeaveBalance';
-import ViewSingleEmployeeLeaveDetail from '@/pages/ViewSingleEmployeeLeaveDetail';
+import SingleEmployeeLeaveDetails from '@/pages/SingleEmployeeLeaveDetails';
 import LeaveDetails from '@/pages/LeaveDetails';
 
 export type AppRoute = {
@@ -43,7 +43,7 @@ export const APP_ROUTES: AppRoute[] = [
   },
   {
     path: '/manager/employees/:id',
-    element: <ViewSingleEmployeeLeaveDetail />,
+    element: <SingleEmployeeLeaveDetails />,
     roles: ['MANAGER'],
   },
 ];
