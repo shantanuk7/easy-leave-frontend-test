@@ -5,11 +5,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-    tsconfigPaths(),
-  ],
+  plugins: [react(), tailwindcss(), tsconfigPaths()],
   test: {
     globals: true,
     environment: 'jsdom',
@@ -19,18 +15,19 @@ export default defineConfig({
       include: ['src/**'],
       exclude: [
         'src/main.tsx',
-        'src/components/ui/**',     // Shadcn UI Components
-        'src/hooks/use-mobile.ts',  // Shadcn component hooks
-        'src/lib/utils.ts',         // Shadcn utlity functions
+        'src/components/ui/**', // Shadcn UI Components
+        'src/hooks/use-mobile.ts', // Shadcn component hooks
+        'src/hooks/use-sidebar.ts', // Shadcn component hooks
+        'src/lib/utils.ts', // Shadcn utlity functions
         '**/*.css',
-        '**/src/api/**',          // API layer
+        '**/src/api/**', // API layer
       ],
       thresholds: {
         branches: 100,
         functions: 100,
         lines: 100,
         statements: 100,
-      }
-    }
+      },
+    },
   },
 });
