@@ -14,11 +14,14 @@ import type { NavItem } from '@/types/navigation';
 import { CalendarDays } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { SidebarLogo } from './SidebarLogo';
+import { useSidebar } from '@/hooks/use-sidebar';
 
 const NavItemLink = ({ item }: { item: NavItem }): React.JSX.Element => {
+  const { setOpenMobile } = useSidebar();
+
   return (
     <SidebarMenuItem>
-      <NavLink to={item.href}>
+      <NavLink to={item.href} onClick={() => setOpenMobile(false)}>
         {({ isActive }) => (
           <SidebarMenuButton asChild isActive={isActive} tooltip={item.name}>
             <span className="flex items-center gap-2">

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, test, expect, vi } from 'vitest';
 import { AppSidebar } from './AppSidebar';
 import { MemoryRouter } from 'react-router-dom';
@@ -9,9 +9,22 @@ vi.mock('@/hooks/useAuthUser', () => ({
   default: vi.fn(),
 }));
 
+const setOpenMobile = vi.fn();
+
+vi.mock('@/hooks/use-sidebar', () => ({
+  useSidebar: vi.fn(() => ({
+    state: 'expanded' as const,
+    open: true,
+    setOpen: vi.fn(),
+    openMobile: false,
+    setOpenMobile,
+    isMobile: false,
+    toggleSidebar: vi.fn(),
+  })),
+}));
+
 import useAuthUser from '@/hooks/useAuthUser';
 import type { Role } from '@/types/auth';
-import { SidebarProvider } from './ui/sidebar';
 import { TooltipProvider } from './ui/tooltip';
 
 const renderAppSidebar = (role?: string) => {
@@ -26,11 +39,9 @@ const renderAppSidebar = (role?: string) => {
   render(
     <AuthProvider>
       <TooltipProvider>
-        <SidebarProvider>
-          <MemoryRouter>
-            <AppSidebar />
-          </MemoryRouter>
-        </SidebarProvider>
+        <MemoryRouter>
+          <AppSidebar />
+        </MemoryRouter>
       </TooltipProvider>
     </AuthProvider>,
   );
@@ -55,5 +66,13 @@ describe('AppSidebar Component', () => {
     renderAppSidebar('ADMIN');
 
     expect(screen.getByText('Admin')).toBeInTheDocument();
+  });
+
+  test('sets setOpenMobile(false) when a sidebar nav item is clicked', () => {
+    renderAppSidebar();
+
+    fireEvent.click(screen.getAllByRole('link')[0]);
+
+    expect(setOpenMobile).toHaveBeenCalledWith(false);
   });
 });
