@@ -18,8 +18,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }): React
       const data = await getAuthenticatedUser();
       setUser(data);
       Cookie.set('XSRF-TOKEN', data.csrfToken, {
-        sameSite: import.meta.env.VITE_COOKIE_SAME_SITE as 'strict' | 'lax' | 'none',
-        secure: import.meta.env.VITE_COOKIE_SECURE === 'true',
+        sameSite: import.meta.env.VITE_COOKIE_SAME_SITE,
+        secure: import.meta.env.VITE_COOKIE_SECURE,
       });
     } catch (err: unknown) {
       setUser(null);
