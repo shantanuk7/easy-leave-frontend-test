@@ -1,9 +1,8 @@
 import { getAuthenticatedUser } from '@/api/auth.api';
 import type { AuthContextType } from '@/types/auth';
 import type { User } from '@/types/user';
-import { Cookie } from 'lucide-react';
 import { createContext, useEffect, useState } from 'react';
-
+import Cookie from 'js-cookie';
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }): React.JSX.Element => {
