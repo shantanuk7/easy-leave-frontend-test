@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi, beforeEach } from 'vitest';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, useNavigate } from 'react-router-dom';
 import Employees from './AllEmployeesLeaveBalance';
 import * as employeesApi from '../api/employeesLeaveBalance.api';
 import * as useEmployeesLeaveBalanceHook from '../hooks/useEmployeesLeaveBalance';
@@ -31,6 +31,14 @@ const defaultHookValue = {
   hasMore: false,
   loadMore: vi.fn(),
 };
+
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: vi.fn(),
+  };
+});
 
 vi.mock('../api/employeesLeaveBalance.api', () => ({
   fetchYears: vi.fn().mockResolvedValue(['2026', '2025', '2024']),
@@ -199,5 +207,18 @@ describe('Employees Page Component', () => {
     const leavesRemainingCell = screen.getByText('0');
 
     expect(leavesRemainingCell).toHaveClass('text-red-600');
+  });
+
+  test('navigates to employee details page on row click', async () => {
+    const mockNavigate = vi.fn();
+    vi.mocked(useNavigate).mockReturnValue(mockNavigate);
+    renderEmployeesPage();
+
+    await waitFor(() => {
+      expect(screen.getByText('Rakshit Saxena')).toBeInTheDocument();
+    });
+    await userEvent.click(screen.getByText('Rakshit Saxena'));
+
+    expect(mockNavigate).toHaveBeenCalledWith('/manager/employees/1');
   });
 });
