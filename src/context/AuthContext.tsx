@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }): React
       setError(null);
 
       const data = await getAuthenticatedUser();
+      console.log('Fetched user:', data);
       setUser(data);
       Cookie.set('XSRF-TOKEN', data.csrfToken, {
         sameSite: import.meta.env.VITE_COOKIE_SAME_SITE,
