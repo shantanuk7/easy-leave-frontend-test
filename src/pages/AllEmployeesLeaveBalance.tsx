@@ -6,11 +6,14 @@ import useEmployeesLeaveBalance from '@/hooks/useEmployeesLeaveBalance';
 import type { EmployeeLeaveRecord } from '../types/employeeLeaveBalance';
 import FilterDropdown from '@/components/FilterDropdown';
 import { fetchYears } from '@/api/employeesLeaveBalance.api';
+import { useNavigate } from 'react-router-dom';
 
 function AllEmployeesLeaveBalance(): React.JSX.Element {
   const [years, setYears] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>('');
   const { employees, loading, error, hasMore, loadMore } = useEmployeesLeaveBalance(selectedYear);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadYears() {
@@ -66,6 +69,9 @@ function AllEmployeesLeaveBalance(): React.JSX.Element {
           columns={columns}
           message="No employee found"
           getRowKey={(employee: EmployeeLeaveRecord) => employee.employeeId}
+          onRowClick={(employee: EmployeeLeaveRecord) =>
+            navigate(`/manager/employees/${employee.employeeId}`)
+          }
         />
 
         {loading && <Loading />}
