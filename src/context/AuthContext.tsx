@@ -2,7 +2,7 @@ import { getAuthenticatedUser } from '@/api/auth.api';
 import type { AuthContextType } from '@/types/auth';
 import type { User } from '@/types/user';
 import { createContext, useEffect, useState } from 'react';
-import Cookie from 'js-cookie';
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }): React.JSX.Element => {
@@ -16,15 +16,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }): React
       setError(null);
 
       const data = await getAuthenticatedUser();
-      console.log('Fetched user:', data);
       setUser(data);
-      Cookie.set('XSRF-TOKEN', data.csrfToken, {
-        sameSite: import.meta.env.VITE_COOKIE_SAME_SITE,
-        secure: import.meta.env.VITE_COOKIE_SECURE,
-      });
     } catch (err: unknown) {
       setUser(null);
-
       if (err instanceof Error) {
         setError(err.message);
       } else {
@@ -40,15 +34,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }): React
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        setUser,
-        loading,
-        error,
-        fetchCurrentUser,
-      }}
-    >
+    <AuthContext.Provider value={{ user, setUser, loading, error, fetchCurrentUser }}>
       {children}
     </AuthContext.Provider>
   );
