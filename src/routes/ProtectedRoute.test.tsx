@@ -56,7 +56,13 @@ describe('ProtectedRoute tests', () => {
 
   test('renders children when user is authenticated', () => {
     vi.mocked(useAuthUser).mockReturnValue({
-      user: { id: 'uuid', name: 'Raj', email: 'raj@technogise.com', role: 'EMPLOYEE' },
+      user: {
+        id: 'uuid',
+        name: 'Raj',
+        email: 'raj@technogise.com',
+        role: 'EMPLOYEE',
+        csrfToken: 'fake-csrf-token',
+      },
       loading: false,
       error: null,
       setUser: vi.fn(),
@@ -70,7 +76,13 @@ describe('ProtectedRoute tests', () => {
 
   test('redirects when user does not have required role', async () => {
     vi.mocked(useAuthUser).mockReturnValue({
-      user: { id: 'uuid', name: 'Raj', email: 'raj@technogise.com', role: 'EMPLOYEE' },
+      user: {
+        id: 'uuid',
+        name: 'Raj',
+        email: 'raj@technogise.com',
+        role: 'EMPLOYEE',
+        csrfToken: 'fake-csrf-token',
+      },
       loading: false,
       error: null,
       setUser: vi.fn(),

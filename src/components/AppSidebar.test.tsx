@@ -29,7 +29,15 @@ import { TooltipProvider } from './ui/tooltip';
 
 const renderAppSidebar = (role?: string) => {
   vi.mocked(useAuthUser).mockReturnValue({
-    user: role ? { id: '1', name: 'Test User', email: 'test@test.com', role: role as Role } : null,
+    user: role
+      ? {
+          id: '1',
+          name: 'Test User',
+          email: 'test@test.com',
+          role: role as Role,
+          csrfToken: 'fake-csrf-token',
+        }
+      : null,
     setUser: vi.fn(),
     loading: false,
     error: null,

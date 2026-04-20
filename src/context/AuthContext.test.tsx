@@ -24,6 +24,7 @@ describe('AuthContext test', () => {
       name: 'Raj',
       email: 'raj@technogise.com',
       role: 'EMPLOYEE',
+      csrfToken: 'fake-csrf-token',
     });
 
     render(

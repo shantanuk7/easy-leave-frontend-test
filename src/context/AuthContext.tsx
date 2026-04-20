@@ -1,6 +1,7 @@
 import { getAuthenticatedUser } from '@/api/auth.api';
 import type { AuthContextType } from '@/types/auth';
 import type { User } from '@/types/user';
+import { Cookie } from 'lucide-react';
 import { createContext, useEffect, useState } from 'react';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -17,9 +18,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }): React
 
       const data = await getAuthenticatedUser();
       setUser(data);
+      Cookie.set('XSRF-TOKEN', data.csrfToken, {
+        sameSite: import.meta.env.VITE_COOKIE_SAME_SITE as 'strict' | 'lax' | 'none',
+        secure: import.meta.env.VITE_COOKIE_SECURE === 'true',
+      });
     } catch (err: unknown) {
       setUser(null);
-      
+
       if (err instanceof Error) {
         setError(err.message);
       } else {

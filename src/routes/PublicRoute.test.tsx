@@ -27,7 +27,13 @@ const renderRoutes = () => {
 describe('PublicRoute tests', () => {
   test('redirects to /dashboard when user is already authenticated', async () => {
     vi.mocked(useAuthUser).mockReturnValue({
-      user: { id: 'uuid', name: 'Raj', email: 'raj@technogise.com', role: 'EMPLOYEE' },
+      user: {
+        id: 'uuid',
+        name: 'Raj',
+        email: 'raj@technogise.com',
+        role: 'EMPLOYEE',
+        csrfToken: 'fake-csrf-token',
+      },
       loading: false,
       error: null,
       setUser: vi.fn(),
